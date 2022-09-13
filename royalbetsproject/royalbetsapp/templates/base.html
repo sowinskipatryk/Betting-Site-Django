@@ -10,10 +10,25 @@
 </head>
 <body class="bg-dark">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient">
-    <a class="brand" href="#">
-    <img id="site-logo" width=64px src="{% static 'images/royalbets_site_logo.png' %}">
-    <span class="site-name text-white h4 m-2">Royal Bets</span>
+  <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+      <img id="site-logo" width=64px src="{% static 'images/royalbets_site_logo.png' %}">
+        <span class="ms-1">Royal Bets</span>
     </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Table</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Matches</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 {% block content %}
 {% endblock content %}
