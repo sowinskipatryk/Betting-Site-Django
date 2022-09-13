@@ -1,5 +1,15 @@
-body
+.brand
 {
-    background-color: #064916 !important;
-    padding: 50px;
+    padding: 10px 0px 10px 15px;
+}
+
+.brand:hover
+{
+    text-decoration: none;
+}
+
+.team-logo-frame
+{
+    background-color: white;
+    display: inline-block;
 }

@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from .models import Team
 
 
 def index(request):
-    return render(request, 'index.html')
+    teams = Team.objects.all()
+    context = {'teams': teams}
+    return render(request, 'index.html', context)

@@ -10,9 +10,8 @@ class Team(models.Model):
     league_points = models.IntegerField(default=0, null=True, blank=True)
     goals_scored = models.IntegerField(default=0, null=True, blank=True)
     goals_conceded = models.IntegerField(default=0, null=True, blank=True)
-    points = models.IntegerField(default=0, null=True, blank=True)
     matches_played = models.IntegerField(default=0, null=True, blank=True)
-    form = models.CharField(max_length=5, default='')
+    form = models.CharField(max_length=5, default='', blank=True)
 
 
 class Fixture(models.Model):
