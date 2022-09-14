@@ -1,4 +1,9 @@
-.team-logo-frame
+.team-logo-frame, .bet-odd, .bet-option, .odd-block
 {
     display: inline-block;
+}
+
+.bet
+{
+    background-color: rgb(44,48,52) !important;
 }
