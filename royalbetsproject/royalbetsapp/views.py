@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Team
+from .models import Team, Fixture
 
 
 def table(request):
@@ -9,7 +9,8 @@ def table(request):
 
 
 def matches(request):
-    context = {}
+    fixtures = Fixture.objects.all()
+    context = {'fixtures': fixtures}
     return render(request, 'matches.html', context)
 
 

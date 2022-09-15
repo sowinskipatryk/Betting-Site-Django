@@ -2,28 +2,37 @@
 {% load static %}
 {% block title %}Matches{% endblock title %}
 {% block content %}
+{% for match in fixtures %}
 <div class="row d-block mt-4">
-    <div class="p-2 bet">
-        <div class="text-white">29 października 2022</div>
-        <div class="text-white">Manchester City - Arsenal London</div>
-        <div class="odd-block text-center ms-2">
-            <div class="mt-4">
-                <div class="bet-option col-sm-3 text-white">1</div>
-            </div>
-            <div class="bet-odd col-sm-3"><button type="button" class="btn btn-primary">1.72</button></div>
+    <div class="p-4 bet">
+        <div class="text-white h6">{{match.date|date:'d F Y j:i'}}</div>
+        <div class="text-white mt-4">
+            <img class="team-logo me-2" width=32px alt="{{match.team_home}}" src="{{match.team_home.image_url}}"> {{match.team_home}} - {{match.team_away}}
+            <img class="team-logo ms-2" width=32px alt="{{match.team_away}}" src="{{match.team_away.image_url}}">
         </div>
-        <div class="odd-block text-center ms-2">
-            <div class="mt-4">
-                <div class="bet-option col-sm-3 text-white">X</div>
+        <div class="odds-segment">
+            <div class="odds">
+            <div class="odd-block text-center ms-2">
+                <div class="mt-4">
+                    <div class="bet-option col-sm-3 text-white">1</div>
+                </div>
+                <div class="bet-odd col-sm-3"><button type="button" class="btn btn-primary">{{match.odds_team_home}}</button></div>
             </div>
-            <div class="bet-odd col-sm-3"><button type="button" class="btn btn-primary">3.15</button></div>
+            <div class="odd-block text-center ms-2">
+                <div class="mt-4">
+                    <div class="bet-option col-sm-3 text-white">X</div>
+                </div>
+                <div class="bet-odd col-sm-3"><button type="button" class="btn btn-primary">{{match.odds_draw}}</button></div>
+            </div>
+            <div class="odd-block text-center ms-2">
+                <div class="mt-4">
+                    <div class="bet-option col-sm-3 text-white">2</div>
+                </div>
+                <div class="bet-odd col-sm-3"><button type="button" class="btn btn-primary">{{match.odds_team_away}}</button></div>
+            </div>
         </div>
-        <div class="odd-block text-center ms-2">
-            <div class="mt-4">
-                <div class="bet-option col-sm-3 text-white">2</div>
-            </div>
-            <div class="bet-odd col-sm-3"><button type="button" class="btn btn-primary">4.72</button></div>
         </div>
     </div>
 </div>
+{% endfor %}
 {% endblock content %}

@@ -23,7 +23,7 @@
             {% for team in teams %}
             <tbody>
                 <th scope="row">{{team.position}}</th>
-                <td><div class="team-logo-frame me-2"><img class="team-logo" width=32px alt="{{team.name}}" src="{{team.image.url}}"></div>{{team.name}}</td>
+                <td><div class="team-logo-frame me-2"><img class="team-logo" width=32px alt="{{team.name}}" src="{{team.image_url}}"></div>{{team.name}}</td>
                 <td>{{team.league_points}}</td>
                 <td>{{team.matches_played}}</td>
                 <td>{{team.wins}}</td>

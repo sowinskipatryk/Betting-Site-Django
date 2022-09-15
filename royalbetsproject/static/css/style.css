@@ -7,3 +7,10 @@
 {
     background-color: rgb(44,48,52) !important;
 }
+
+.odds
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px !important;
+}
