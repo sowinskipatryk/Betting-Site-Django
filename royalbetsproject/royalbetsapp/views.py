@@ -29,8 +29,23 @@ def table(request):
 
 def matches(request):
     fixtures = Fixture.objects.all()
+
+    fixtures_sorted = []
+    for fx in fixtures:
+        fixtures_sorted.append(fx)
+    n = len(fixtures)
+    swapped = False
+    for i in range(n-1):
+        for j in range(0, n-i-1):
+            if fixtures_sorted[j].date > fixtures_sorted[j+1].date:
+                swapped = True
+                fixtures_sorted[j], fixtures_sorted[j+1] = fixtures_sorted[j+1], fixtures_sorted[j]
+
+        if not swapped:
+            return
+
     page = request.GET.get('page', 1)
-    paginator = Paginator(fixtures, 10)
+    paginator = Paginator(fixtures_sorted, 10)
     try:
         matches_page = paginator.page(page)
     except PageNotAnInteger:

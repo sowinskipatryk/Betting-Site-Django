@@ -41,11 +41,12 @@ for match in matches:
         match_dict['odds_team_away'] = '%.2f' % odd_away
         match_id += 1
         match_dict['match_num'] = match_id
-        match_dict['week'] = random.choice(match_dates)[0]
-        match_dict['date'] = random.choice(match_dates)[random.randint(1, 3)] + timedelta(hours=random.choice(range(12, 21)), minutes=random.choice([0, 15, 30, 45]))
+        draw_date = random.choice(match_dates)
+        match_dict['week'] = draw_date[0]
+        match_dict['date'] = draw_date[random.randint(1, 3)] + timedelta(hours=random.choice(range(12, 21)), minutes=random.choice([0, 15, 30, 45]))
         match_list.append((tuple(match_dict.values())))
 
 random.shuffle(match_list)
 
-for m in match_list:
-    print(m)
+# for m in match_list:
+#     print(m)

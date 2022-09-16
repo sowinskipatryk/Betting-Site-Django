@@ -8,7 +8,7 @@
     <div class="infinite-item">
         <div class="row d-block mt-6 pb-3">
             <div class="p-4 bet">
-                <div class="text-white h6">{{match.date|date:'d F Y H:i'}}</div>
+                <div class="text-white h6">{{match.date|date:'d F Y H:i'}}<span style="float: right;">Week {{match.week}}</span></div>
                 <div class="text-white mt-4 mb-4">
                     <img class="team-logo me-2" width=32px alt="{{match.team_home}}" src="{{match.team_home.image_url}}"> {{match.team_home}} - {{match.team_away}}
                     <img class="team-logo ms-2" width=32px alt="{{match.team_away}}" src="{{match.team_away.image_url}}">
