@@ -2,8 +2,8 @@
 {% load static %}
 {% block title %}Table{% endblock title %}
 {% block content %}
-<div class="bg-dark text-white mt-4">
-<img id="site-logo" width=120px src="{% static 'images/plogo.png' %}">
+<div class="bg-dark text-white header-image" style="padding-top: 120px;">
+    <img id="site-logo" width=120px src="{% static 'images/plogo.png' %}">
     <span class="h3 text-white">Season 2022/2023</span>
 </div>
 <div class="row mt-4">
@@ -30,7 +30,7 @@
                 <td>{{team.draws}}</td>
                 <td>{{team.losses}}</td>
                 <td>{{team.goals_scored}}:{{team.goals_conceded}}</td>
-                <td>{{team.form}}</td>
+                <td>{{team.form_five_matches}}</td>
             </tbody>
             {% endfor %}
         </table>

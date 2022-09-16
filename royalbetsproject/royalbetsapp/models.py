@@ -4,6 +4,7 @@ from django.db import models
 class Team(models.Model):
     name = models.CharField(max_length=200)
     image = models.ImageField(null=True, blank=True)
+    position = models.IntegerField(default=0)
     wins = models.IntegerField(default=0, null=True, blank=True)
     draws = models.IntegerField(default=0, null=True, blank=True)
     losses = models.IntegerField(default=0, null=True, blank=True)
@@ -11,7 +12,7 @@ class Team(models.Model):
     goals_scored = models.IntegerField(default=0, null=True, blank=True)
     goals_conceded = models.IntegerField(default=0, null=True, blank=True)
     matches_played = models.IntegerField(default=0, null=True, blank=True)
-    form = models.CharField(max_length=5, default='', blank=True)
+    form = models.CharField(max_length=5, default='?????', blank=True)
 
     def __str__(self):
         return self.name
@@ -23,6 +24,12 @@ class Team(models.Model):
         except:
             url = ''
         return url
+
+    @property
+    def form_five_matches(self):
+        while len(self.form) < 5:
+            self.form += '?'
+        return self.form
 
 
 class Fixture(models.Model):

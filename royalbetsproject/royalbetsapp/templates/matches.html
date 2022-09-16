@@ -2,8 +2,11 @@
 {% load static %}
 {% block title %}Matches{% endblock title %}
 {% block content %}
-{% for match in fixtures %}
-<div class="row d-block mt-4">
+<div style="padding-top: 120px;"></div>
+<div class="infinite-container">
+{% for match in matches %}
+<div class="infinite-number">
+<div class="row d-block mt-6 pb-3">
     <div class="p-4 bet">
         <div class="text-white h6">{{match.date|date:'d F Y H:i'}}</div>
         <div class="text-white mt-4 mb-4">
@@ -26,5 +29,20 @@
         </div>
     </div>
 </div>
+</div>
 {% endfor %}
+</div>
+
+{% if matches.has_next %}
+<div class="mb-2" style="text-align: center;">
+<button type="button" class="btn btn-secondary m-2"><a class="infinite-more-link" href="?page={{ matches.next_page_number }}" style="text-decoration: none; color:white;">Load more</a></button>
+</div>
+{% endif %}
+
+<script>
+var infinite = new Waypoint.Infinite({
+  element: $('.infinite-container')[0]
+});
+</script>
+
 {% endblock content %}
