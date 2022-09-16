@@ -32,14 +32,14 @@ def matches(request):
     page = request.GET.get('page', 1)
     paginator = Paginator(fixtures, 10)
     try:
-        matches = paginator.page(page)
+        matches_page = paginator.page(page)
     except PageNotAnInteger:
-        matches = paginator.page(1)
+        matches_page = paginator.page(1)
     except EmptyPage:
-        matches = paginator.page(paginator.num_pages)
-    context = {'matches': matches}
+        matches_page = paginator.page(paginator.num_pages)
+    context = {'matches': matches_page}
     return render(request, 'matches.html', context)
 
 
 def index(request):
-    return redirect('/table')
+    return redirect('/matches')
