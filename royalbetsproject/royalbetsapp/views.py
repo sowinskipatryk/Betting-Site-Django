@@ -34,15 +34,10 @@ def matches(request):
     for fx in fixtures:
         fixtures_sorted.append(fx)
     n = len(fixtures)
-    swapped = False
     for i in range(n-1):
         for j in range(0, n-i-1):
-            if fixtures_sorted[j].date > fixtures_sorted[j+1].date:
-                swapped = True
+            if fixtures_sorted and fixtures_sorted[j].date > fixtures_sorted[j+1].date:
                 fixtures_sorted[j], fixtures_sorted[j+1] = fixtures_sorted[j+1], fixtures_sorted[j]
-
-        if not swapped:
-            return
 
     page = request.GET.get('page', 1)
     paginator = Paginator(fixtures_sorted, 10)
@@ -58,3 +53,29 @@ def matches(request):
 
 def index(request):
     return redirect('/matches')
+
+
+def results(request):
+    fixtures = Fixture.objects.all()
+
+    fixtures_sorted = []
+    for fx in fixtures:
+        if fx.played:
+            fixtures_sorted.append(fx)
+    n = len(fixtures_sorted)
+
+    for i in range(n-1):
+        for j in range(0, n-i-1):
+            if fixtures_sorted[j].date < fixtures_sorted[j+1].date:
+                fixtures_sorted[j], fixtures_sorted[j+1] = fixtures_sorted[j+1], fixtures_sorted[j]
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(fixtures_sorted, 20)
+    try:
+        matches_page = paginator.page(page)
+    except PageNotAnInteger:
+        matches_page = paginator.page(1)
+    except EmptyPage:
+        matches_page = paginator.page(paginator.num_pages)
+    context = {'matches': matches_page}
+    return render(request, 'results.html', context)

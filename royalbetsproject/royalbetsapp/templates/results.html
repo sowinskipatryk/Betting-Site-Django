@@ -1,32 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Matches{% endblock title %}
+{% block title %}Results{% endblock title %}
 {% block content %}
+
 <div style="padding-top: 120px;"></div>
 <div class="infinite-container">
     {% for match in matches %}
-    {% if not match.played %}
+    {% if match.played %}
     <div class="infinite-item">
         <div class="row d-block mt-6 pb-3">
             <div class="p-4 bet">
                 <div class="text-white h6">{{match.date|date:'d F Y H:i'}}<span style="float: right;">Week {{match.week}}</span></div>
                 <div class="text-white mt-4 mb-4">
-                    <img class="team-logo me-2" width=32px alt="{{match.team_home}}" src="{{match.team_home.image_url}}"> {{match.team_home}} - {{match.team_away}}
+                    <img class="team-logo me-2" width=32px alt="{{match.team_home}}" src="{{match.team_home.image_url}}">
+                    {% if match.winner_home %}<span class="text-info">{{match.team_home}}</span> - {{match.team_away}}
+                    {% elif match.winner_away %}{{match.team_home}} - <span class="text-info">{{match.team_away}}</span>
+                    {% else %}{{match.team_home}} - {{match.team_away}}
+                    {% endif %}
                     <img class="team-logo ms-2" width=32px alt="{{match.team_away}}" src="{{match.team_away.image_url}}">
-                </div>
-                <div class="odds-segment">
-                    <table class="table table-dark">
-                    <thead>
-                        <th class="text-center" scope="col">1</th>
-                        <th class="text-center" scope="col">X</th>
-                        <th class="text-center" scope="col">2</th>
-                    </thead>
-                    <tbody>
-                        <td class="text-center"><button type="button" class="btn btn-primary">{{match.odds_team_home}}</button></td>
-                        <td class="text-center"><button type="button" class="btn btn-primary">{{match.odds_draw}}</button></td>
-                        <td class="text-center"><button type="button" class="btn btn-primary">{{match.odds_team_away}}</button></td>
-                    </tbody>
-                    </table>
+                    <span class="ms-2">{{match.result_home}}:{{match.result_away}}</span>
                 </div>
             </div>
         </div>

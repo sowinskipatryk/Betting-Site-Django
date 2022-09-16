@@ -41,3 +41,8 @@ class Fixture(models.Model):
     match_num = models.IntegerField(default=0, null=True, blank=True)
     week = models.IntegerField(default=0, null=True, blank=True)
     date = models.DateTimeField()
+    played = models.BooleanField(default=False)
+    result_home = models.IntegerField(default=0, null=True, blank=True)
+    result_away = models.IntegerField(default=0, null=True, blank=True)
+    winner_home = models.BooleanField(default=False)
+    winner_away = models.BooleanField(default=False)
