@@ -37,50 +37,15 @@ def draw_results(home_odds, draw_odds, away_odds):
 
 def table(request):
     teams = Team.objects.all()
-    for tm in teams:
-        tm.matches_played = 0
-        tm.wins = 0
-        tm.draws = 0
-        tm.losses = 0
-        tm.league_points = 0
-        tm.form = '?????'
-        tm.goals_scored = 0
-        tm.goals_conceded = 0
-        tm.save()
+    # for tm in teams:
+    #     tm.clear_data()
 
     fixtures = Fixture.objects.all()
     for fx in fixtures:
-        if fx.played:
-            fx.team_home.matches_played += 1
-            fx.team_away.matches_played += 1
-
-            if fx.winner_home:
-                fx.team_home.league_points += 3
-                fx.team_home.wins += 1
-                fx.team_away.losses += 1
-                fx.team_home.form = 'W' + fx.team_home.form[:4]
-                fx.team_away.form = 'L' + fx.team_away.form[:4]
-            elif fx.winner_away:
-                fx.team_away.league_points += 3
-                fx.team_away.wins += 1
-                fx.team_home.losses += 1
-                fx.team_home.form = 'L' + fx.team_home.form[:4]
-                fx.team_away.form = 'W' + fx.team_away.form[:4]
-            else:
-                fx.team_home.league_points += 1
-                fx.team_away.league_points += 1
-                fx.team_home.draws += 1
-                fx.team_away.draws += 1
-                fx.team_home.form = 'D' + fx.team_home.form[:4]
-                fx.team_away.form = 'D' + fx.team_away.form[:4]
-
-            fx.team_home.goals_scored += fx.result_home
-            fx.team_away.goals_scored += fx.result_away
-            fx.team_home.goals_conceded += fx.result_away
-            fx.team_away.goals_conceded += fx.result_home
-
-        fx.team_home.save()
-        fx.team_away.save()
+        # fx.table_updated = False
+        # fx.save()
+        if fx.played and not fx.table_updated:
+            fx.update_table()
 
     teams_sorted = []
     for tm in teams:

@@ -31,6 +31,17 @@ class Team(models.Model):
             self.form += '?'
         return self.form
 
+    def clear_data(self):
+        self.matches_played = 0
+        self.wins = 0
+        self.draws = 0
+        self.losses = 0
+        self.league_points = 0
+        self.form = '?????'
+        self.goals_scored = 0
+        self.goals_conceded = 0
+        self.save()
+
 
 class Fixture(models.Model):
     team_home = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='home_team')
@@ -46,3 +57,41 @@ class Fixture(models.Model):
     result_away = models.IntegerField(default=0, null=True, blank=True)
     winner_home = models.BooleanField(default=False)
     winner_away = models.BooleanField(default=False)
+    table_updated = models.BooleanField(default=False)
+
+    def update_table(self):
+        self.team_home.matches_played += 1
+        self.team_away.matches_played += 1
+
+        if self.winner_home:
+            self.team_home.league_points += 3
+            self.team_home.wins += 1
+            self.team_away.losses += 1
+            self.team_home.form = 'W' + self.team_home.form[:4]
+            self.team_away.form = 'L' + self.team_away.form[:4]
+
+        elif self.winner_away:
+            self.team_away.league_points += 3
+            self.team_away.wins += 1
+            self.team_home.losses += 1
+            self.team_home.form = 'L' + self.team_home.form[:4]
+            self.team_away.form = 'W' + self.team_away.form[:4]
+
+        else:
+            self.team_home.league_points += 1
+            self.team_away.league_points += 1
+            self.team_home.draws += 1
+            self.team_away.draws += 1
+            self.team_home.form = 'D' + self.team_home.form[:4]
+            self.team_away.form = 'D' + self.team_away.form[:4]
+
+        self.team_home.goals_scored += self.result_home
+        self.team_away.goals_scored += self.result_away
+        self.team_home.goals_conceded += self.result_away
+        self.team_away.goals_conceded += self.result_home
+
+        self.table_updated = True
+
+        self.save()
+        self.team_home.save()
+        self.team_away.save()
