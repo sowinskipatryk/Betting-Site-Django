@@ -37,23 +37,63 @@ def draw_results(home_odds, draw_odds, away_odds):
 
 def table(request):
     teams = Team.objects.all()
+    for tm in teams:
+        tm.matches_played = 0
+        tm.wins = 0
+        tm.draws = 0
+        tm.losses = 0
+        tm.league_points = 0
+        tm.form = '?????'
+        tm.goals_scored = 0
+        tm.goals_conceded = 0
+        tm.save()
+
+    fixtures = Fixture.objects.all()
+    for fx in fixtures:
+        if fx.played:
+            fx.team_home.matches_played += 1
+            fx.team_away.matches_played += 1
+
+            if fx.winner_home:
+                fx.team_home.league_points += 3
+                fx.team_home.wins += 1
+                fx.team_away.losses += 1
+                fx.team_home.form = 'W' + fx.team_home.form[:4]
+                fx.team_away.form = 'L' + fx.team_away.form[:4]
+            elif fx.winner_away:
+                fx.team_away.league_points += 3
+                fx.team_away.wins += 1
+                fx.team_home.losses += 1
+                fx.team_home.form = 'L' + fx.team_home.form[:4]
+                fx.team_away.form = 'W' + fx.team_away.form[:4]
+            else:
+                fx.team_home.league_points += 1
+                fx.team_away.league_points += 1
+                fx.team_home.draws += 1
+                fx.team_away.draws += 1
+                fx.team_home.form = 'D' + fx.team_home.form[:4]
+                fx.team_away.form = 'D' + fx.team_away.form[:4]
+
+            fx.team_home.goals_scored += fx.result_home
+            fx.team_away.goals_scored += fx.result_away
+            fx.team_home.goals_conceded += fx.result_away
+            fx.team_away.goals_conceded += fx.result_home
+
+        fx.team_home.save()
+        fx.team_away.save()
+
     teams_sorted = []
-    for team in teams:
-        teams_sorted.append(team)
+    for tm in teams:
+        teams_sorted.append(tm)
     n = len(teams)
-    swapped = False
     for i in range(n-1):
         for j in range(0, n-i-1):
             if teams_sorted[j].league_points < teams_sorted[j+1].league_points or (teams_sorted[j].league_points == teams_sorted[j+1].league_points and teams_sorted[j].name > teams_sorted[j+1].name):
-                swapped = True
                 teams_sorted[j], teams_sorted[j+1] = teams_sorted[j+1], teams_sorted[j]
 
-        if not swapped:
-            return
-
-    for id, team in enumerate(teams_sorted):
-        team.position = id + 1
-        team.save()
+    for id, tm in enumerate(teams_sorted):
+        tm.position = id + 1
+        tm.save()
 
     context = {'teams': teams_sorted}
     return render(request, 'table.html', context)
@@ -99,8 +139,13 @@ def results(request):
 
             if fx.result_home > fx.result_away:
                 fx.winner_home = True
+                fx.winner_away = False
             elif fx.result_home < fx.result_away:
                 fx.winner_away = True
+                fx.winner_home = False
+            else:
+                fx.winner_home = False
+                fx.winner_away = False
 
             fx.save()
 
