@@ -1,44 +1,44 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>RoyalBets | {% block title %}{% endblock title %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
-    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'js/infinite.min.js' %}"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-</head>
-<body class="bg-dark">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient fixed-top">
-  <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'matches' %}">
-      <img id="site-logo" width=64px src="{% static 'images/royalbets_site_logo.png' %}">
-        <span class="ms-1">Royal Bets</span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'table' %}">Table</a>
-        </li>
-          <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'matches' %}">Matches</a>
-        </li>
-          <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'results' %}">Results</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<div class="container">
-{% block content %}
-{% endblock content %}
-</div>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+        <title>RoyalBets | {% block title %}{% endblock title %}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+        <script src="{% static 'js/jquery-3.6.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+        <script src="{% static 'js/infinite.min.js' %}"></script>
+    </head>
+    <body class="bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient fixed-top">
+          <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'odds' %}">
+                    <img id="site-logo" width=64px src="{% static 'images/royalbets_site_logo.png' %}">
+                    <span class="ms-1">Royal Bets</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url 'table' %}">League Table</a>
+                    </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'odds' %}">Betting Odds</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'results' %}">Match Results</a>
+                      </li>
+                    </ul>
+                </div>
+          </div>
+        </nav>
+        <div class="container">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </body>
 </html>

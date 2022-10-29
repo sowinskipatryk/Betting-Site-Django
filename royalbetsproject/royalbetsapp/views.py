@@ -64,7 +64,7 @@ def table(request):
     return render(request, 'table.html', context)
 
 
-def matches(request):
+def odds(request):
     fixtures = Fixture.objects.all()
 
     fixtures_sorted = []
@@ -80,17 +80,17 @@ def matches(request):
     page = request.GET.get('page', 1)
     paginator = Paginator(fixtures_sorted, 10)
     try:
-        matches_page = paginator.page(page)
+        matches = paginator.page(page)
     except PageNotAnInteger:
-        matches_page = paginator.page(1)
+        matches = paginator.page(1)
     except EmptyPage:
-        matches_page = paginator.page(paginator.num_pages)
-    context = {'matches': matches_page}
-    return render(request, 'matches.html', context)
+        matches = paginator.page(paginator.num_pages)
+    context = {'matches': matches}
+    return render(request, 'odds.html', context)
 
 
 def index(request):
-    return redirect('/matches')
+    return redirect('/odds')
 
 
 def results(request):
@@ -126,10 +126,10 @@ def results(request):
     page = request.GET.get('page', 1)
     paginator = Paginator(fixtures_sorted, 20)
     try:
-        matches_page = paginator.page(page)
+        matches = paginator.page(page)
     except PageNotAnInteger:
-        matches_page = paginator.page(1)
+        matches = paginator.page(1)
     except EmptyPage:
-        matches_page = paginator.page(paginator.num_pages)
-    context = {'matches': matches_page}
+        matches = paginator.page(paginator.num_pages)
+    context = {'matches': matches}
     return render(request, 'results.html', context)
