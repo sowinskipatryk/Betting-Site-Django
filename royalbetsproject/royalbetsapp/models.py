@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Team(models.Model):
@@ -95,3 +96,12 @@ class Fixture(models.Model):
         self.save()
         self.team_home.save()
         self.team_away.save()
+
+
+class ExtendedUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    points = models.FloatField()
+    avatar = models.ImageField(upload_to='profile_pics')
+
+    def __str__(self):
+        return self.user.username

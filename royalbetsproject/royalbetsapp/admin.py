@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Team, Fixture
+from .models import Team, Fixture, ExtendedUser
 
 
 class TeamAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class FixtureAdmin(admin.ModelAdmin):
 
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Fixture, FixtureAdmin)
+admin.site.register(ExtendedUser)

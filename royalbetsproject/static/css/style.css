@@ -23,3 +23,53 @@ div#loginalert
     text-align: center;
     padding: 10% 0;
 }
+
+.navbtn
+{
+    padding: 10px 15px 10px 15px;
+    font-weight: bold;
+    margin: 5px;
+}
+
+#register-button
+{
+    color: white;
+    background-color: #424649;
+    border-color: #424649;
+}
+
+#register-button:hover
+{
+    background-color: #212529;
+    border-color: #212529;
+}
+
+#logout-button
+{
+    color: white;
+    background-color: #424649;
+    border-color: #424649;
+}
+
+#logout-button:hover
+{
+    background-color: #212529;
+    border-color: #212529;
+}
+
+.btn#login-button
+{
+    margin-right: 5px;
+}
+
+.signupform
+{
+    background-color: #424649;
+}
+
+div.form-container
+{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
