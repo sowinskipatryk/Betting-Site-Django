@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .models import Team, Fixture
+from .models import Team, Fixture, ExtendedUser
 from .forms import RegisterForm
 from .utils import draw_results
 

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Team(models.Model):
@@ -98,10 +100,42 @@ class Fixture(models.Model):
         self.team_away.save()
 
 
+COUPON_TYPES = [
+    (0, 'Single'),
+    (1, 'Multi'),
+]
+
+COUPON_OUTCOMES = [
+    (0, 'Win'),
+    (1, 'Lose'),
+    (2, 'Cancelled')
+]
+
+
+class Coupon(models.Model):
+    coupon_id = models.IntegerField(primary_key=True)
+    type = models.CharField(choices=COUPON_TYPES, max_length=10)
+    events = models.ManyToManyField(Fixture)
+    create_date = models.DateTimeField(auto_now_add=True)
+    creator = models.OneToOneField(User, on_delete=models.CASCADE)
+    stake = models.FloatField(default=2.00)
+    odds = models.FloatField()
+    tax = models.FloatField()
+    outcome = models.CharField(choices=COUPON_OUTCOMES, max_length=6)
+    prize = models.FloatField()
+
+
 class ExtendedUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    points = models.FloatField()
+    balance = models.FloatField(default=0.00)
     avatar = models.ImageField(upload_to='profile_pics')
+    coupons = models.ManyToManyField(Coupon)
 
     def __str__(self):
         return self.user.username
+
+
+@receiver(post_save, sender=User)
+def create_custom_user(sender, instance, created, **kwargs):
+    if created:
+        ExtendedUser.objects.create(user=instance)
