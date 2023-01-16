@@ -30,6 +30,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         my_models_data = [
-            {'name': team[0], 'image': f'royalbetsproject/static/images/{team[1]}.png'} for team in TEAMS]
+            {'name': team[0], 'image': f'{team[1]}.png'} for team in TEAMS]
         Team.objects.bulk_create([Team(**data) for data in my_models_data])
         self.stdout.write(self.style.SUCCESS('Successfully populated the database with model instances'))

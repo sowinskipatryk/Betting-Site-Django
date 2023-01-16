@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 class Team(models.Model):
     name = models.CharField(max_length=200)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to='')
     position = models.IntegerField(default=0)
     wins = models.IntegerField(default=0, null=True, blank=True)
     draws = models.IntegerField(default=0, null=True, blank=True)
