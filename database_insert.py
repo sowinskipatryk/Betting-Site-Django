@@ -9,7 +9,7 @@ for match in match_list:
         print("Connection to DB acquired")
 
         insert_query = """INSERT INTO royalbetsapp_fixture (team_home_id, team_away_id, odds_team_home, 
-        odds_draw, odds_team_away, match_num, week, date) VALUES (?,?,?,?,?,?,?,?);"""
+        odds_draw, odds_team_away, match_num, week, date, played, result_home, result_away, winner_home, winner_away, table_updated) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);"""
 
         count = cursor.execute(insert_query, match)
         sqliteConnection.commit()
