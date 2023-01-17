@@ -15,13 +15,14 @@ div#betbuilder
     border-radius: 5px;
     margin-left: 10px;
     background-color: #0067ff;
+    padding-bottom: 10px;
 }
 
-div#loginalert
+div#betHeader
 {
     color: white;
     text-align: center;
-    padding: 10% 0;
+    padding: 10% 5%;
 }
 
 .navbtn
@@ -34,14 +35,14 @@ div#loginalert
 #register-button
 {
     color: white;
-    background-color: #424649;
-    border-color: #424649;
+    background-color: #212529;
+    border-color: #212529;
 }
 
 #register-button:hover
 {
-    background-color: #212529;
-    border-color: #212529;
+    background-color: #424649;
+    border-color: #424649;
 }
 
 #logout-button
@@ -70,6 +71,16 @@ div#loginalert
 div.form-container
 {
     width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#betPick {
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.2rem;
+    width: 85%;
+    background-color: #1d2024;
     margin-left: auto;
     margin-right: auto;
 }
