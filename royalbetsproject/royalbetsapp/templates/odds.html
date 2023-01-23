@@ -39,12 +39,24 @@
         <div class="col-xl-3 d-inline">
             <div id="betbuilder" class="mb-1">
                 {% if not user.is_authenticated %}
-                <div id="betHeader" data-logged="false">Zaloguj się, aby stworzyć kupon</div>
+                    <div id="betHeader" data-logged="false">Log in to create a coupon</div>
                 {% else %}
-                <div id="betHeader" data-logged="true">Dodaj pierwsze zdarzenie do kuponu</div>
-                <div id="chosenBets"></div>
+                <form>
+                    <div id="betHeader" data-logged="true">Add first event to the coupon</div>
+                    <div id="betContent">
+                    <div id="chosenBets"></div>
+                        <div id="betSummary" class="d-none">
+                                <div>
+                                    <label for="stakeRange">Stake:<span id="betStake" class="ms-1 bolder"></span></label>
+                                    <input type="range" value="2.00" min="2.00" max="100.00" step="0.01" class="d-none" id="stakeRange">
+                                </div>
+                                <div>Odds:<span id="betOdds" class="ms-1 bolder"></span></div>
+                                <div>Prize:<span id="betPrize" class="ms-1 bolder"></span></div>
+                        </div>
+                    <input type="submit" value="Place Bet" class="btn btn-danger placeBetButton d-none">
+                    </div>
+                </form>
                 {% endif %}
-                </div>
             </div>
         </div>
     </div>

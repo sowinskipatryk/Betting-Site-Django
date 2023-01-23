@@ -22,7 +22,7 @@ div#betHeader
 {
     color: white;
     text-align: center;
-    padding: 10% 5%;
+    padding: 7.5% 5% 5% 5%;
 }
 
 .navbtn
@@ -79,8 +79,35 @@ div#betPick {
     color: white;
     font-size: 0.7rem;
     padding: 0.2rem;
-    width: 85%;
     background-color: #1d2024;
     margin-left: auto;
     margin-right: auto;
+}
+
+#betContent {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.placeBetButton {
+    padding: 2.5% 7% 2.5% 7%;
+    font-size: 0.8rem;
+    margin-bottom: 3%;
+}
+
+#betSummary {
+    color: white;
+    font-size: 0.8rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+label[for="stakeRange"]
+{
+    min-width: 40%;
+}
+
+.bolder {
+    font-weight: bolder;
 }

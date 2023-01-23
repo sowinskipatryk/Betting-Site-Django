@@ -43,7 +43,7 @@
                   <a href="{% url 'register' %}" id="register-button" class="btn btn-dark navbtn">SIGN UP</a>
               </div>
               {% else %}
-              <span class="navbar-text">
+              <span class="navbar-text me-2">
                   {{ext_user}} <strong>${{ ext_user.balance|floatformat:2 }}</strong>
               </span>
               <a href="{% url 'logout' %}" id="logout-button" class="btn navbtn">LOGOUT</a>
