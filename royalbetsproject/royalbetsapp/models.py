@@ -62,6 +62,9 @@ class Fixture(models.Model):
     winner_away = models.BooleanField(default=False)
     table_updated = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.team_home} - {self.team_away}"
+
     def update_table(self):
         self.team_home.matches_played += 1
         self.team_away.matches_played += 1
@@ -106,23 +109,37 @@ COUPON_TYPES = [
 ]
 
 COUPON_OUTCOMES = [
-    (0, 'Win'),
-    (1, 'Lose'),
-    (2, 'Cancelled')
+    (0, 'Open'),
+    (1, 'Won'),
+    (2, 'Lost'),
+    (3, 'Cancelled')
+]
+
+MATCH_PICKS = [
+    ('1', 'Home'),
+    ('X', 'Draw'),
+    ('2', 'Away'),
 ]
 
 
 class Coupon(models.Model):
     coupon_id = models.IntegerField(primary_key=True)
-    type = models.CharField(choices=COUPON_TYPES, max_length=10)
-    events = models.ManyToManyField(Fixture)
+    type = models.IntegerField(choices=COUPON_TYPES)
     create_date = models.DateTimeField(auto_now_add=True)
-    creator = models.OneToOneField(User, on_delete=models.CASCADE)
-    stake = models.FloatField(default=2.00)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    stake = models.FloatField()
     odds = models.FloatField()
-    tax = models.FloatField()
-    outcome = models.CharField(choices=COUPON_OUTCOMES, max_length=6)
+    outcome = models.IntegerField(choices=COUPON_OUTCOMES, default=0)
     prize = models.FloatField()
+
+    def __str__(self):
+        return str(self.coupon_id)
+
+
+class Bet(models.Model):
+    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+    fixture = models.ForeignKey(Fixture, on_delete=models.CASCADE)
+    pick = models.CharField(choices=MATCH_PICKS, max_length=4)
 
 
 class ExtendedUser(models.Model):

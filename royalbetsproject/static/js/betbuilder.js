@@ -7,10 +7,21 @@ var betSummary = $('#betSummary');
 var betOdds = $('#betOdds')[0];
 var betPrize = $('#betPrize')[0];
 var betStake = $('#betStake')[0];
-var stakeRange = $('#stakeRange');
+var stakeInput = $('#stakeInput');
+var couponForm = $('couponForm')[0];
 
 var betPicks = {}
 var odds = 0.0
+
+function setInitialState() {
+    betHeader.innerText = 'Add first event to the coupon';
+    chosenBets.innerHTML = '';
+    submitButton.addClass('d-none');
+    betSummary.addClass('d-none');
+    stakeInput.addClass('d-none');
+    betPicks = {};
+    odds = 0.0;
+}
 
 for (i=0; i<betButtons.length; i++) {
     betButtons[i].addEventListener('click', function(){
@@ -45,9 +56,9 @@ for (i=0; i<betButtons.length; i++) {
 
         if (userLogged) {
 
-            betStake.textContent = "$"+stakeRange[0].value;
-            betPrize.textContent = "$"+(Math.round(odds*stakeRange[0].value * 100) / 100)
-            stakeRange[0].oninput = function() {
+            betStake.textContent = "$"+stakeInput[0].value;
+            betPrize.textContent = "$"+(Math.round(odds*stakeInput[0].value * 100) / 100)
+            stakeInput[0].oninput = function() {
                 betStake.textContent = "$"+this.value;
                 betPrize.textContent = "$"+(Math.round(odds*this.value * 100) / 100)
             }
@@ -58,28 +69,57 @@ for (i=0; i<betButtons.length; i++) {
             betOdds.innerText = odds.toString()
             submitButton.removeClass('d-none')
             betSummary.removeClass('d-none')
-            stakeRange.removeClass('d-none')
+            stakeInput.removeClass('d-none')
             }
             else if (betsNum > 1) {
             betHeader.innerText = 'Multi Bet'
             betOdds.innerText = odds.toString()
             submitButton.removeClass('d-none')
             betSummary.removeClass('d-none')
-            stakeRange.removeClass('d-none')
+            stakeInput.removeClass('d-none')
             }
             else {
-            betHeader.innerText = 'Add first event to the coupon'
-            submitButton.addClass('d-none');
-            betSummary.addClass('d-none');
-            stakeRange.addClass('d-none');
+            setInitialState();
             }
 
             var string = "";
             for (const [key, value] of Object.entries(betPicks)) {
-                betString = "<div id='betPick' class='mb-1 rounded'>" + "#" + key + "  Pick: " + value['pick'] + "  Team: " + value['team'] + " <strong>" + value['odd'] + "</strong></div>"
+                betString = "<div class='betPick mb-1 rounded'>" + "#<span class='matchIdInput'>" + key + "</span>  Pick: <span class='matchPickInput'>" + value['pick'] + "</span>  Team: " + value['team'] + " <strong>" + value['odd'] + "</strong></div>"
                 string += betString
                 }
             chosenBets.innerHTML = string;
         }
     });
 };
+
+submitButton[0].addEventListener("click", function(event) {
+    event.preventDefault();
+    let xhr = new XMLHttpRequest();
+    let url = "/coupon_submit/";
+    xhr.open("POST", url, true);
+
+    var betsInput = [];
+    var typeInput = document.getElementById("typeInput");
+    var matchPickInputs = $('.matchPickInput');
+    var matchIdInputs = $('.matchIdInput');
+    matchIdInputs.each(function(index, element) {
+        var matchId = element.innerText;
+        var matchPick = matchPickInputs[index].innerText;
+        var obj = {'matchId': matchId, 'matchPick': matchPick};
+        betsInput.push(obj);
+    });
+
+    let data = {
+      'betsInput': betsInput,
+      'stakeInput': stakeInput[0].value,
+      'oddsInput': betOdds.innerText,
+      'prizeInput': betPrize.innerText
+    };
+
+    let csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send(JSON.stringify(data));
+
+    setInitialState();
+});

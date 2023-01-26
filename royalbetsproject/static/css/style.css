@@ -48,8 +48,8 @@ div#betHeader
 #logout-button
 {
     color: white;
-    background-color: #424649;
-    border-color: #424649;
+    background-color: #2e3133;
+    border-color: #2e3133;
 }
 
 #logout-button:hover
@@ -75,7 +75,7 @@ div.form-container
     margin-right: auto;
 }
 
-div#betPick {
+div.betPick {
     color: white;
     font-size: 0.7rem;
     padding: 0.2rem;

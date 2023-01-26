@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Team, Fixture, ExtendedUser, Coupon
+from .models import Team, Fixture, ExtendedUser, Coupon, Bet
 
 
 class TeamAdmin(admin.ModelAdmin):
@@ -11,14 +11,19 @@ class FixtureAdmin(admin.ModelAdmin):
 
 
 class CouponAdmin(admin.ModelAdmin):
-    list_display = ('coupon_id', 'type', 'creator', 'create_date', 'stake', 'odds', 'outcome', 'prize')
+    list_display = ('coupon_id', 'creator', 'type', 'stake', 'odds', 'prize', 'outcome', 'create_date')
 
 
 class ExtendedUserAdmin(admin.ModelAdmin):
     list_display = ('user', 'balance')
 
 
+class BetAdmin(admin.ModelAdmin):
+    list_display = ('coupon', 'pick', 'fixture')
+
+
 admin.site.register(Team, TeamAdmin)
 admin.site.register(Fixture, FixtureAdmin)
 admin.site.register(ExtendedUser, ExtendedUserAdmin)
 admin.site.register(Coupon, CouponAdmin)
+admin.site.register(Bet, BetAdmin)
