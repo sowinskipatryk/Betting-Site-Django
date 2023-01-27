@@ -1,0 +1,26 @@
+@media only screen and (max-width: 768px) {
+    .team-logo {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    #stakeRangeHolder {
+    display: block;
+    }
+    #stakeInput {
+        width: 100%;
+        padding-block: 3px;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    #stakeRangeHolder {
+    display: flex;
+    }
+    #stakeInput {
+        width: 45%;
+        margin-left: auto;
+    }
+}

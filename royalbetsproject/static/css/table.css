@@ -4,12 +4,6 @@
     }
 }
 
-@media only screen and (max-width: 992px) {
-    body {
-        font-size: 14px;
-    }
-}
-
 @media only screen and (max-width: 768px) {
     .team-logo {
         width: 18px;
