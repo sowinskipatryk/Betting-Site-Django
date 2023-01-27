@@ -5,19 +5,19 @@
 {% block content %}
     <div style="padding-top: 120px;"></div>
     <div class="row">
-        <div class="infinite-container col-xl-9">
+        <div class="infinite-container col-9">
             {% for match in matches %}
                 {% if not match.played %}
                     <div class="infinite-item">
                         <div class="row d-block mt-6 pb-3">
-                            <div class="p-4 bet">
+                            <div class="p-4 bet rounded">
                                 <div class="text-white h6">{{match.date|date:'d F Y H:i'}}<span style="float: right;">Week {{match.week}}</span></div>
                                 <div class="text-white mt-4 mb-4">
                                     <img class="team-logo me-2" width=32px alt="{{match.team_home}}" src="{{match.team_home.image_url}}"> {{match.team_home}} - {{match.team_away}}
                                     <img class="team-logo ms-2" width=32px alt="{{match.team_away}}" src="{{match.team_away.image_url}}">
                                 </div>
                                 <div class="odds-segment">
-                                    <table class="table table-dark">
+                                    <table class="table table-dark oddsTable">
                                         <thead>
                                             <th class="text-center" scope="col">1</th>
                                             <th class="text-center" scope="col">X</th>
@@ -36,7 +36,7 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="col-xl-3 d-inline">
+        <div class="col-3 d-inline">
             <div id="betbuilder" class="mb-1">
                 {% if not user.is_authenticated %}
                     <div id="betHeader" data-logged="false">Log in to create a coupon</div>
@@ -44,7 +44,7 @@
                     <form method="post" id="couponForm">
                     {% csrf_token %}
                     <div id="betHeader" data-logged="true">Add first event to the coupon</div>
-                    <div id="betContent">
+                    <div id="betContent" class="rounded">
                     <div id="chosenBets"></div>
                         <div id="betSummary" class="d-none">
                                 <div>

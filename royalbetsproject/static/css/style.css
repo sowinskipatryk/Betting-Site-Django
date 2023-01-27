@@ -16,6 +16,8 @@ div#betbuilder
     margin-left: 10px;
     background-color: #0067ff;
     padding-bottom: 10px;
+    position: sticky;
+    top: 120px;
 }
 
 div#betHeader
@@ -30,6 +32,11 @@ div#betHeader
     padding: 10px 15px 10px 15px;
     font-weight: bold;
     margin: 5px;
+}
+
+.navbar-text
+{
+    color: rgba(255,255,255,0.8);
 }
 
 #register-button
@@ -79,7 +86,7 @@ div.betPick {
     color: white;
     font-size: 0.7rem;
     padding: 0.2rem;
-    background-color: #1d2024;
+    background-color: #5d5c5c;
     margin-left: auto;
     margin-right: auto;
 }
@@ -88,12 +95,13 @@ div.betPick {
     width: 85%;
     margin-left: auto;
     margin-right: auto;
+    background-color: rgb(44,48,52);
 }
 
 .placeBetButton {
     padding: 2.5% 7% 2.5% 7%;
     font-size: 0.8rem;
-    margin-bottom: 3%;
+    margin-top: 2px;
 }
 
 #betSummary {
@@ -103,11 +111,16 @@ div.betPick {
     padding-bottom: 0.5rem;
 }
 
-label[for="stakeRange"]
+label[for="stakeInput"]
 {
-    min-width: 40%;
+    min-width:40%;
 }
 
 .bolder {
     font-weight: bolder;
+}
+
+.oddsTable {
+    max-width: 600px;
+    margin: 0 auto;
 }

@@ -7,7 +7,7 @@
 <div class="infinite-container">
     {% for match in matches %}
     {% if match.played %}
-    <div class="infinite-item">
+    <div class="infinite-item mx-auto col-lg-8">
         <div class="row d-block mt-6 pb-3">
             <div class="p-4 bet">
                 <div class="text-white h6">{{match.date|date:'d F Y H:i'}}<span style="float: right;">Week {{match.week}}</span></div>

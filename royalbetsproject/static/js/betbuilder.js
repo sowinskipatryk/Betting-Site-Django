@@ -8,7 +8,7 @@ var betOdds = $('#betOdds')[0];
 var betPrize = $('#betPrize')[0];
 var betStake = $('#betStake')[0];
 var stakeInput = $('#stakeInput');
-var couponForm = $('couponForm')[0];
+var betContent = $('#betContent');
 
 var betPicks = {}
 var odds = 0.0
@@ -16,6 +16,7 @@ var odds = 0.0
 function setInitialState() {
     betHeader.innerText = 'Add first event to the coupon';
     chosenBets.innerHTML = '';
+    betContent.removeClass('p-3');
     submitButton.addClass('d-none');
     betSummary.addClass('d-none');
     stakeInput.addClass('d-none');
@@ -70,6 +71,7 @@ for (i=0; i<betButtons.length; i++) {
             submitButton.removeClass('d-none')
             betSummary.removeClass('d-none')
             stakeInput.removeClass('d-none')
+            betContent.addClass('p-3');
             }
             else if (betsNum > 1) {
             betHeader.innerText = 'Multi Bet'
