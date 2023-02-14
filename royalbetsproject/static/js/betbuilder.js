@@ -1,4 +1,4 @@
-const betButtons = document.getElementsByClassName('betbutton');
+const betButtons = document.getElementsByClassName('betButton');
 var betHeader = document.getElementById('betHeader');
 var chosenBets = document.getElementById('chosenBets');
 var submitButton = $('input[type="submit"]');

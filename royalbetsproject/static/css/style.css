@@ -5,7 +5,23 @@
 
 .bet
 {
-    background-color: rgb(44,48,52) !important;
+    background-color: rgb(44,48,52);
+}
+
+.betDetails
+{
+    background-color: #565656;
+}
+
+
+.result
+{
+    background-color: rgb(28 32 36);
+}
+
+.resultDetails
+{
+    background-color: rgb(51 58 64);
 }
 
 div#betbuilder
@@ -44,12 +60,14 @@ div#betHeader
     color: white;
     background-color: #212529;
     border-color: #212529;
+    border: 2px solid white;
 }
 
 #register-button:hover
 {
     background-color: #424649;
     border-color: #424649;
+    border: 2px solid white;
 }
 
 #logout-button
@@ -68,11 +86,14 @@ div#betHeader
 .btn#login-button
 {
     margin-right: 5px;
+    border: 2px solid #292eb5;
+    color: #292eb5;
 }
 
-.signupform
+.signUpForm
 {
-    background-color: #424649;
+    background-color: #182a44;
+    border: 1px solid #0d1624;
 }
 
 div.form-container
@@ -80,6 +101,12 @@ div.form-container
     width: 400px;
     margin-left: auto;
     margin-right: auto;
+    background-color: #0d336a;
+    border-radius: var(--bs-border-radius);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border: 1px solid #0d1624;
 }
 
 div.betPick {
@@ -123,4 +150,19 @@ label[for="stakeInput"]
 .oddsTable {
     max-width: 600px;
     margin: 0 auto;
+}
+
+.siteName {
+    letter-spacing: 2px;
+}
+
+.betButton {
+}
+
+.signConfirm {
+    border: 1px solid white;
+}
+
+.signConfirm:hover {
+    border: 1px solid white;
 }
