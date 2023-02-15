@@ -112,6 +112,7 @@ def results(request):
     return render(request, 'results.html', context)
 
 
+@login_required
 def coupon_submit(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -187,3 +188,10 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('odds'))
+
+
+@login_required
+def coupon_history(request):
+    coupons = Coupon.objects.all()
+    context = {'coupons': coupons}
+    return render(request, 'coupons.html', context)

@@ -1,41 +1,62 @@
-const betButtons = document.getElementsByClassName('betButton');
-var betHeader = document.getElementById('betHeader');
-var chosenBets = document.getElementById('chosenBets');
-var submitButton = $('input[type="submit"]');
-var userLogged = betHeader.dataset.logged == "true";
-var betSummary = $('#betSummary');
-var betOdds = $('#betOdds')[0];
-var betPrize = $('#betPrize')[0];
-var betStake = $('#betStake')[0];
-var stakeInput = $('#stakeInput');
-var betContent = $('#betContent');
+const oddsButtons = document.getElementsByClassName('oddButton');
+const betHeader = document.getElementById('betHeader');
+const pickedBets = document.getElementById('pickedBets');
+const placeBetButton = document.getElementById('placeBetButton');
+const userLogged = betHeader.dataset.logged === "true";
+const betSummary = document.getElementById('betSummary');
+const betOdds = document.getElementById('betOdds');
+const betPrize = document.getElementById('betPrize');
+const betStake = document.getElementById('betStake');
+const stakeInput = document.getElementById('stakeInput');
+const betContent = document.getElementById('betContent');
 
-var betPicks = {}
-var odds = 0.0
+let betPicks = {};
+let odds = 0.0;
+
+function updateCoupon() {
+    let string = "";
+    for (const [key, {pick, team, odd}] of Object.entries(betPicks)) {
+      const betString = `
+        <div class='betPick mb-1 rounded'>
+          #<span class='matchIdInput'>${key}</span>
+          Pick: <span class='matchPickInput'>${pick}</span>
+          Team: ${team}
+          <strong>${odd}</strong>
+          <button type="button" onclick="deleteBet(${key}, ${odd}); console.log(betPicks);">X</button>
+        </div>
+      `;
+      string += betString
+    }
+pickedBets.innerHTML = string;
+}
+
+function deleteBet(id, odd) {
+    delete betPicks[id];
+    odds /= parseFloat(odd);
+}
 
 function setInitialState() {
     betHeader.innerText = 'Add first event to the coupon';
-    chosenBets.innerHTML = '';
-    betContent.removeClass('p-3');
-    submitButton.addClass('d-none');
-    betSummary.addClass('d-none');
-    stakeInput.addClass('d-none');
+    pickedBets.innerHTML = '';
+    betContent.classList.remove('p-3');
+    placeBetButton.classList.add('d-none');
+    betSummary.classList.add('d-none');
+    stakeInput.classList.add('d-none');
     betPicks = {};
     odds = 0.0;
 }
 
-for (i=0; i<betButtons.length; i++) {
-    betButtons[i].addEventListener('click', function(){
-        var team = this.dataset.team
-        var pick = this.dataset.pick
-        var matchNum = this.dataset.match
-        var odd = this.dataset.odd
+for (i=0; i<oddsButtons.length; i++) {
+    oddsButtons[i].addEventListener('click', function(){
+        const team = this.dataset.team
+        const pick = this.dataset.pick
+        const matchNum = this.dataset.match
+        const odd = this.dataset.odd
 
-        var data = {'pick': pick, 'team': team, 'odd': odd};
+        const data = {'pick': pick, 'team': team, 'odd': odd};
 
         if (betPicks[matchNum] !== undefined && betPicks[matchNum]['pick'] === data['pick']) {
-            delete betPicks[matchNum];
-            odds /= parseFloat(odd);
+            deleteBet(matchNum, odd)
         }
         else {
             if (Object.keys(betPicks).length === 0) {
@@ -53,67 +74,76 @@ for (i=0; i<betButtons.length; i++) {
             betPicks[matchNum] = data
         }
 
-        var betsNum = Object.keys(betPicks).length;
+        let betsNum = Object.keys(betPicks).length;
 
         if (userLogged) {
 
-            betStake.textContent = "$"+stakeInput[0].value;
-            betPrize.textContent = "$"+(Math.round(odds*stakeInput[0].value * 100) / 100)
-            stakeInput[0].oninput = function() {
+            betStake.textContent = "$"+stakeInput.value;
+            betPrize.textContent = "$"+(Math.round(odds*stakeInput.value * 100) / 100)
+            stakeInput.oninput = function() {
                 betStake.textContent = "$"+this.value;
                 betPrize.textContent = "$"+(Math.round(odds*this.value * 100) / 100)
             }
 
             odds = Math.round(odds * 100) / 100
+
             if (betsNum == 1) {
             betHeader.innerText = 'Single Bet'
             betOdds.innerText = odds.toString()
-            submitButton.removeClass('d-none')
-            betSummary.removeClass('d-none')
-            stakeInput.removeClass('d-none')
-            betContent.addClass('p-3');
+            placeBetButton.classList.remove('d-none')
+            betSummary.classList.remove('d-none')
+            stakeInput.classList.remove('d-none')
+            betContent.classList.add('p-3');
             }
             else if (betsNum > 1) {
             betHeader.innerText = 'Multi Bet'
             betOdds.innerText = odds.toString()
-            submitButton.removeClass('d-none')
-            betSummary.removeClass('d-none')
-            stakeInput.removeClass('d-none')
+            placeBetButton.classList.remove('d-none')
+            betSummary.classList.remove('d-none')
+            stakeInput.classList.remove('d-none')
             }
             else {
             setInitialState();
             }
 
-            var string = "";
-            for (const [key, value] of Object.entries(betPicks)) {
-                betString = "<div class='betPick mb-1 rounded'>" + "#<span class='matchIdInput'>" + key + "</span>  Pick: <span class='matchPickInput'>" + value['pick'] + "</span>  Team: " + value['team'] + " <strong>" + value['odd'] + "</strong></div>"
-                string += betString
+            let string = "";
+            for (const [key, {pick, team, odd}] of Object.entries(betPicks)) {
+                  const betString = `
+                    <div class='betPick mb-1 rounded'>
+                      #<span class='matchIdInput'>${key}</span>
+                      Pick: <span class='matchPickInput'>${pick}</span>
+                      Team: ${team}
+                      <strong>${odd}</strong>
+                      <button type="button" onclick="deleteBet(${key}, ${odd}); console.log(betPicks); updateCoupon();">X</button>
+                    </div>
+                  `;
+                  string += betString
                 }
-            chosenBets.innerHTML = string;
+            pickedBets.innerHTML = string;
         }
     });
 };
 
-submitButton[0].addEventListener("click", function(event) {
+placeBetButton.addEventListener("click", function(event) {
     event.preventDefault();
     let xhr = new XMLHttpRequest();
     let url = "/coupon_submit/";
     xhr.open("POST", url, true);
 
-    var betsInput = [];
-    var typeInput = document.getElementById("typeInput");
-    var matchPickInputs = $('.matchPickInput');
-    var matchIdInputs = $('.matchIdInput');
+    let betsInput = [];
+    const typeInput = document.getElementById("typeInput");
+    const matchPickInputs = $('.matchPickInput');
+    const matchIdInputs = $('.matchIdInput');
     matchIdInputs.each(function(index, element) {
-        var matchId = element.innerText;
-        var matchPick = matchPickInputs[index].innerText;
-        var obj = {'matchId': matchId, 'matchPick': matchPick};
+        const matchId = element.innerText;
+        const matchPick = matchPickInputs[index].innerText;
+        const obj = {'matchId': matchId, 'matchPick': matchPick};
         betsInput.push(obj);
     });
 
     let data = {
       'betsInput': betsInput,
-      'stakeInput': stakeInput[0].value,
+      'stakeInput': stakeInput.value,
       'oddsInput': betOdds.innerText,
       'prizeInput': betPrize.innerText
     };

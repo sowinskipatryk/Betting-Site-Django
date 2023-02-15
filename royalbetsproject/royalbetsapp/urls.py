@@ -12,7 +12,8 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('coupon_submit/', views.coupon_submit, name='coupon_submit')
+    path('coupon_submit/', views.coupon_submit, name='coupon_submit'),
+    path('coupons/', views.coupon_history, name='coupons')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

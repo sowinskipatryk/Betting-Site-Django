@@ -47,6 +47,7 @@
               <span class="navbar-text me-2">
                   {{ext_user}} <strong>${{ ext_user.balance|floatformat:2 }}</strong>
               </span>
+              <a class="nav-link" aria-current="page" href="{% url 'coupons' %}">Coupons</a>
               <a href="{% url 'logout' %}" id="logout-button" class="btn navbtn">LOGOUT</a>
               {% endif %}
           </div>
