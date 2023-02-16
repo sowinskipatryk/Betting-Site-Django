@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .models import Team, Fixture, Coupon, ExtendedUser, User, Bet
+from .models import Team, Fixture, Coupon, ExtendedUser, User, Bet, COUPON_TYPES
 from .forms import RegisterForm
 from .utils import draw_results
 import json
@@ -115,25 +115,35 @@ def results(request):
 @login_required
 def coupon_submit(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        coupon_id = random.randint(10**15, (10**16)-1)
-        bets = data["betsInput"]
-
-        if len(bets) == 1:
-            betType = 0
-        else:
-            betType = 1
-
-        stake = float(data["stakeInput"])
-        odds = float(data["oddsInput"])
-        prize = float(data["prizeInput"][1:])
-
         if request.user.is_authenticated:
-            creator = User.objects.get(username=request.user.username)
+
+            data = json.loads(request.body)
+
+            stake = float(data["stakeInput"])
+            odds = float(data["oddsInput"])
+            prize = float(data["prizeInput"][1:])
+
+            creator = ExtendedUser.objects.get(user=request.user)
+
+            if creator.balance < stake:
+                return JsonResponse(
+                    {"status": "error", "message": "Insufficient funds!"})
+
+            coupon_id = random.randint(10 ** 15, (10 ** 16) - 1)
+
+            bets = data["betsInput"]
+            if len(bets) == 1:
+                betType = 0
+            else:
+                betType = 1
+
             coupon = Coupon(coupon_id=coupon_id, type=betType,
-                        creator=creator, stake=stake, odds=odds, prize=prize)
+                        creator=creator.user, stake=stake, odds=odds, prize=prize)
 
             coupon.save()
+
+            creator.balance -= stake
+            creator.save()
 
             for bet in bets:
                 new_bet = Bet(coupon=coupon, fixture=Fixture.objects.get(id=bet['matchId']), pick=bet['matchPick'])
@@ -192,6 +202,6 @@ def logout_view(request):
 
 @login_required
 def coupon_history(request):
-    coupons = Coupon.objects.all()
-    context = {'coupons': coupons}
+    coupons = Coupon.objects.all().order_by('-create_date')
+    context = {'coupons': coupons, 'types': COUPON_TYPES}
     return render(request, 'coupons.html', context)

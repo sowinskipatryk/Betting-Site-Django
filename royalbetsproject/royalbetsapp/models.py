@@ -112,7 +112,6 @@ COUPON_OUTCOMES = [
     (0, 'Open'),
     (1, 'Won'),
     (2, 'Lost'),
-    (3, 'Cancelled')
 ]
 
 MATCH_PICKS = [
@@ -145,8 +144,8 @@ class Bet(models.Model):
 class ExtendedUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.FloatField(default=0.00)
-    avatar = models.ImageField(upload_to='profile_pics')
-    coupons = models.ManyToManyField(Coupon)
+    avatar = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+    coupons = models.ManyToManyField(Coupon, blank=True)
 
     def __str__(self):
         return self.user.username

@@ -1,30 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Results{% endblock title %}
+{% block title %}Coupons{% endblock title %}
 {% block content %}
 
 <div style="padding-top: 120px;"></div>
-<div class="infinite-container">
+<div class="container">
     {% for coupon in coupons %}
-    <div class="infinite-item mx-auto col-lg-8">
-        <span class="text-white">{{coupon.coupon_id}}</span>
-        <span class="text-white">{{coupon.stake}}</span>
-        <span class="text-white">{{coupon.odds}}</span>
-        <span class="text-white">{{coupon.prize}}</span>
-    </div>
+        {% if not coupon.outcome %}
+        <div class="item mx-auto col-lg-8 bg-primary rounded p-1 m-3">
+        {% elif coupon.outcome == 1 %}
+        <div class="item mx-auto col-lg-8 bg-success rounded p-1 m-3">
+        {% else %}
+        <div class="item mx-auto col-lg-8 bg-danger rounded p-1 m-3">
+        {% endif %}
+            <span class="text-white">Coupon ID: {{coupon.coupon_id}}</span>
+            {% for type in types %}
+                {% if type.0 == coupon.type %}
+                <span class="text-white">Type: {{type.1}}</span>
+                {% endif %}
+            {% endfor %}
+            <span class="text-white">Stake: {{coupon.stake}}</span>
+            <span class="text-white">Odds: {{coupon.odds}}</span>
+            <span class="text-white">Prize: {{coupon.prize}}</span>
+            <span class="text-white">Created: {{coupon.create_date|date:'d M Y'}}</span>
+        </div>
     {% endfor %}
 </div>
-
-{% if matches.has_next %}
-<div class="mb-2" style="text-align: center;">
-<button type="button" class="btn btn-secondary m-2"><a class="infinite-more-link" href="?page={{ matches.next_page_number }}" style="text-decoration: none; color:white;">Load more</a></button>
-</div>
-{% endif %}
-
-<script>
-var infinite = new Waypoint.Infinite({
-  element: $('.infinite-container')[0]
-});
-</script>
 
 {% endblock content %}

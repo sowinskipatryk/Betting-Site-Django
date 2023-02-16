@@ -166,3 +166,8 @@ label[for="stakeInput"]
 .signConfirm:hover {
     border: 1px solid white;
 }
+
+.deleteBetBtn {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+}
