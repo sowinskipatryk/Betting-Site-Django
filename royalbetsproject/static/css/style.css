@@ -3,23 +3,12 @@
     display: inline-block;
 }
 
-.bet
-{
-    background-color: rgb(44,48,52);
-}
-
-.betDetails
-{
-    background-color: #565656;
-}
-
-
-.result
+.result, .bet, .coupon
 {
     background-color: rgb(28 32 36);
 }
 
-.resultDetails
+.resultDetails, .betDetails
 {
     background-color: rgb(51 58 64);
 }
@@ -30,7 +19,7 @@ div#betbuilder
     min-height:30px;
     border-radius: 5px;
     margin-left: 10px;
-    background-color: #0067ff;
+    background-color: #537cc7;
     padding-bottom: 10px;
     position: sticky;
     top: 120px;
@@ -116,6 +105,7 @@ div.betPick {
     background-color: #5d5c5c;
     margin-left: auto;
     margin-right: auto;
+    overflow: hidden;
 }
 
 #betContent {
@@ -170,4 +160,9 @@ label[for="stakeInput"]
 .deleteBetBtn {
     font-size: 0.75rem;
     padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+}
+
+#myCoupons {
+    margin-left: 1rem;
+    margin-right: 1rem;
 }

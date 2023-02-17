@@ -186,12 +186,30 @@ def coupon_history(request):
                 bet.save()
                 bet_outcomes.append(bet.outcome)
 
+        ext_user = ExtendedUser.objects.get(user=coup.creator)
         if 2 in bet_outcomes:
             coup.outcome = 2
+            coup.prize = 0
+            ext_user.overall -= coup.stake
         elif bet_outcomes and not 0 in bet_outcomes:
             coup.outcome = 1
+            ext_user.overall += (coup.prize - coup.stake)
         coup.save()
+        ext_user.save()
 
     coupons = Coupon.objects.filter(creator=request.user).order_by('-create_date')
-    context = {'coupons': coupons, 'types': COUPON_TYPES}
+    coupon_data = []
+    for coupon in coupons:
+        bet_data = []
+        bets = Bet.objects.filter(coupon=coupon)
+        for bet in bets:
+            bet_data.append({'fixture': bet.fixture, 'pick': bet.pick, 'outcome': bet.outcome})
+        coupon_data.append({'coupon_details': coupon, 'bets_details': bet_data})
+    context = {'coupons': coupon_data, 'types': COUPON_TYPES}
     return render(request, 'coupons.html', context)
+
+
+def leaderboard(request):
+    users = ExtendedUser.objects.all().order_by('-overall')
+    context = {'users': users}
+    return render(request, 'leaderboard.html', context)

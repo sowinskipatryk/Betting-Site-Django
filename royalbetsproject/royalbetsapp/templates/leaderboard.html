@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Coupons{% endblock title %}
+{% block content %}
+
+<div style="padding-top: 120px;"></div>
+<div class="container">
+    {% for user in users %}
+        <div class="item mx-auto col-lg-6 bg-primary rounded p-1 m-3">
+            <span class="text-white">{{user}}: {{user.overall|floatformat:2}}</span>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

@@ -141,6 +141,7 @@ class ExtendedUser(models.Model):
     balance = models.FloatField(default=0.00)
     avatar = models.ImageField(upload_to='profile_pics', null=True, blank=True)
     coupons = models.ManyToManyField(Coupon, blank=True)
+    overall = models.FloatField(default=0.00)
 
     def __str__(self):
         return self.user.username

@@ -1,0 +1,17 @@
+.betList {
+    max-width: 340px;
+}
+
+.couponId, .betType, .betPickList, .couponSummary {
+    font-size: 0.75rem;
+}
+
+.couponCreateDate {
+    font-size: 0.75rem;
+    float: right;
+}
+
+.couponPick {
+    margin-right: 2rem;
+    float: right;
+}

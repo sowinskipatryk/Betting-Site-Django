@@ -1,29 +1,47 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Coupons{% endblock title %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/coupons.css' %}"/>
+{% endblock css %}
 {% block content %}
 
 <div style="padding-top: 120px;"></div>
 <div class="container">
     {% for coupon in coupons %}
-        {% if not coupon.outcome %}
-        <div class="item mx-auto col-lg-8 bg-primary rounded p-1 m-3">
-        {% elif coupon.outcome == 1 %}
-        <div class="item mx-auto col-lg-8 bg-success rounded p-1 m-3">
+    <div class="item mx-auto col-lg-7 col-xl-6 coupon rounded p-3 mb-3">
+        {% if not coupon.coupon_details.outcome %}
+        <div class="bg-primary rounded p-3 couponDetails">
+        {% elif coupon.coupon_details.outcome == 1 %}
+        <div class="bg-success rounded p-3 couponDetails">
         {% else %}
-        <div class="item mx-auto col-lg-8 bg-danger rounded p-1 m-3">
+        <div class="bg-danger rounded p-3 couponDetails">
         {% endif %}
-            <span class="text-white">Coupon ID: {{coupon.coupon_id}}</span>
+            <span class="text-white couponId bolder">{{coupon.coupon_details.coupon_id}}</span>
+            <span class="text-white couponCreateDate bolder">Created at {{coupon.coupon_details.create_date|date:'d M Y H:m'}}</span>
             {% for type in types %}
-                {% if type.0 == coupon.type %}
-                <span class="text-white">Type: {{type.1}}</span>
+                {% if type.0 == coupon.coupon_details.type %}
+                <p class="text-white betType bolder">{{type.1}} Bet</p>
                 {% endif %}
             {% endfor %}
-            <span class="text-white">Stake: {{coupon.stake}}</span>
-            <span class="text-white">Odds: {{coupon.odds}}</span>
-            <span class="text-white">Prize: {{coupon.prize}}</span>
-            <span class="text-white">Created: {{coupon.create_date|date:'d M Y'}}</span>
+            <ul class="list-group pb-3 betList">
+              {% for bet in coupon.bets_details %}
+                {% if bet.outcome == 1 %}
+                <li class="list-group-item list-group-item-success betPickList">
+                {% elif bet.outcome == 2 %}
+                <li class="list-group-item list-group-item-danger betPickList">
+                {% else %}
+                <li class="list-group-item list-group-item-light betPickList">
+                {% endif %}
+                    <span>{{ bet.fixture }}</span><span class="couponPick bolder">{{ bet.pick }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+            <div class="text-white couponSummary">Stake: <span class="bolder">${{coupon.coupon_details.stake|floatformat:2}}</span></div>
+            <div class="text-white couponSummary">Odds: <span class="bolder">{{coupon.coupon_details.odds|floatformat:2}}</span></div>
+            <div class="text-white couponSummary">Prize: <span class="bolder">${{coupon.coupon_details.prize|floatformat:2}}</span></div>
         </div>
+    </div>
     {% endfor %}
 </div>
 
