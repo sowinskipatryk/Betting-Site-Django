@@ -53,7 +53,7 @@ function updateCouponStruct(picks) {
           Pick: <span class='matchPickInput'>${pick}</span>
           Team: ${team}
           <strong>${odd}</strong>
-          <button type="button" class="btn btn-warning deleteBetBtn" onclick="deleteBet(${key}, ${odd}); console.log(betPicks);">X</button>
+          <button type="button" class="btn btn-danger deleteBetBtn" onclick="deleteBet(${key}, ${odd}); console.log(betPicks);">X</button>
         </div>
       `;
       string += betString

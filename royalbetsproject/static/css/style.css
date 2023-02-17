@@ -171,3 +171,8 @@ label[for="stakeInput"]
     font-size: 0.75rem;
     padding: 0.1rem 0.2rem 0.1rem 0.2rem;
 }
+
+.myCoupons {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
