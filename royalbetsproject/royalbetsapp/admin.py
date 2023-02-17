@@ -19,7 +19,7 @@ class ExtendedUserAdmin(admin.ModelAdmin):
 
 
 class BetAdmin(admin.ModelAdmin):
-    list_display = ('coupon', 'pick', 'fixture')
+    list_display = ('pick', 'fixture')
 
 
 admin.site.register(Team, TeamAdmin)

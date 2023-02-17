@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .models import Team, Fixture, Coupon, ExtendedUser, User, Bet, COUPON_TYPES
+from .models import Team, Fixture, Coupon, ExtendedUser, Bet, COUPON_TYPES
 from .forms import RegisterForm
 from .utils import draw_results
 import json
@@ -13,49 +13,20 @@ import random
 
 
 def table(request):
-    teams = Team.objects.all()
-    # for tm in teams:
-    #     tm.clear_data()
-
-    fixtures = Fixture.objects.all()
-    for fx in fixtures:
-        # fx.table_updated = False
-        # fx.save()
-        if fx.played and not fx.table_updated:
-            fx.update_table()
-
-    teams_sorted = []
-    for tm in teams:
-        teams_sorted.append(tm)
-    n = len(teams)
-    for i in range(n-1):
-        for j in range(0, n-i-1):
-            if teams_sorted[j].league_points < teams_sorted[j+1].league_points or (teams_sorted[j].league_points == teams_sorted[j+1].league_points and teams_sorted[j].name > teams_sorted[j+1].name):
-                teams_sorted[j], teams_sorted[j+1] = teams_sorted[j+1], teams_sorted[j]
-
-    for id, tm in enumerate(teams_sorted):
+    teams = Team.objects.all().order_by('-league_points', '-wins', '-goals_scored', 'goals_conceded', 'name')
+    for id, tm in enumerate(teams):
         tm.position = id + 1
         tm.save()
 
-    context = {'teams': teams_sorted}
+    context = {'teams': teams}
     return render(request, 'table.html', context)
 
 
 def odds(request):
-    fixtures = Fixture.objects.all()
-
-    fixtures_sorted = []
-    for fx in fixtures:
-        if not fx.played:
-            fixtures_sorted.append(fx)
-    n = len(fixtures_sorted)
-    for i in range(n-1):
-        for j in range(0, n-i-1):
-            if fixtures_sorted and fixtures_sorted[j].date > fixtures_sorted[j+1].date:
-                fixtures_sorted[j], fixtures_sorted[j+1] = fixtures_sorted[j+1], fixtures_sorted[j]
+    fixtures = Fixture.objects.filter(played=False).order_by('date')
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(fixtures_sorted, 10)
+    paginator = Paginator(fixtures, 10)
     try:
         matches = paginator.page(page)
     except PageNotAnInteger:
@@ -71,14 +42,13 @@ def index(request):
 
 
 def results(request):
-    fixtures = Fixture.objects.all()
+    fixtures_notplayed = Fixture.objects.filter(played=False)
 
-    fixtures_sorted = []
-    for fx in fixtures:
-        if fx.date.timestamp() < datetime.now().timestamp() and not fx.played:
+    for fx in fixtures_notplayed:
+        if fx.date.timestamp() < datetime.now().timestamp():
             fx.played = True
-            fx.result_home, fx.result_away = draw_results(fx.odds_team_home, fx.odds_draw, fx.odds_team_away)
 
+            fx.result_home, fx.result_away = draw_results(fx.odds_team_home, fx.odds_draw, fx.odds_team_away)
             if fx.result_home > fx.result_away:
                 fx.winner_home = True
                 fx.winner_away = False
@@ -89,19 +59,13 @@ def results(request):
                 fx.winner_home = False
                 fx.winner_away = False
 
+            fx.update_table()
             fx.save()
 
-        if fx.played:
-            fixtures_sorted.append(fx)
-    n = len(fixtures_sorted)
-
-    for i in range(n-1):
-        for j in range(0, n-i-1):
-            if fixtures_sorted[j].date < fixtures_sorted[j+1].date:
-                fixtures_sorted[j], fixtures_sorted[j+1] = fixtures_sorted[j+1], fixtures_sorted[j]
+    fixtures_played = Fixture.objects.filter(played=True).order_by('-date')
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(fixtures_sorted, 20)
+    paginator = Paginator(fixtures_played, 20)
     try:
         matches = paginator.page(page)
     except PageNotAnInteger:
@@ -128,6 +92,10 @@ def coupon_submit(request):
             if creator.balance < stake:
                 return JsonResponse(
                     {"status": "error", "message": "Insufficient funds!"})
+
+            if stake > 500_000:
+                return JsonResponse(
+                    {"status": "error", "message": "Maximum prize exceeded!"})
 
             coupon_id = random.randint(10 ** 15, (10 ** 16) - 1)
 
@@ -202,6 +170,28 @@ def logout_view(request):
 
 @login_required
 def coupon_history(request):
-    coupons = Coupon.objects.all().order_by('-create_date')
+
+    open_coupons = Coupon.objects.filter(creator=request.user, outcome=0)
+    for coup in open_coupons:
+        open_bets = Bet.objects.filter(coupon=coup)
+        bet_outcomes = []
+        for bet in open_bets:
+            if bet.fixture.played:
+                if (bet.fixture.winner_home and bet.pick == '1') or (
+                        bet.fixture.winner_away and bet.pick == '2') or (
+                        not bet.fixture.winner_home and not bet.fixture.winner_away and bet.pick == 'X'):
+                    bet.outcome = 1
+                else:
+                    bet.outcome = 2
+                bet.save()
+                bet_outcomes.append(bet.outcome)
+
+        if 2 in bet_outcomes:
+            coup.outcome = 2
+        elif bet_outcomes and not 0 in bet_outcomes:
+            coup.outcome = 1
+        coup.save()
+
+    coupons = Coupon.objects.filter(creator=request.user).order_by('-create_date')
     context = {'coupons': coupons, 'types': COUPON_TYPES}
     return render(request, 'coupons.html', context)

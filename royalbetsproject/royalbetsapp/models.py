@@ -8,14 +8,14 @@ class Team(models.Model):
     name = models.CharField(max_length=200)
     image = models.ImageField(null=True, blank=True, upload_to='')
     position = models.IntegerField(default=0)
-    wins = models.IntegerField(default=0, null=True, blank=True)
-    draws = models.IntegerField(default=0, null=True, blank=True)
-    losses = models.IntegerField(default=0, null=True, blank=True)
-    league_points = models.IntegerField(default=0, null=True, blank=True)
-    goals_scored = models.IntegerField(default=0, null=True, blank=True)
-    goals_conceded = models.IntegerField(default=0, null=True, blank=True)
-    matches_played = models.IntegerField(default=0, null=True, blank=True)
-    form = models.CharField(max_length=5, default='?????', blank=True)
+    wins = models.IntegerField(default=0)
+    draws = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+    league_points = models.IntegerField(default=0)
+    goals_scored = models.IntegerField(default=0)
+    goals_conceded = models.IntegerField(default=0)
+    matches_played = models.IntegerField(default=0)
+    form = models.CharField(max_length=5, default='?????')
 
     def __str__(self):
         return self.name
@@ -27,12 +27,6 @@ class Team(models.Model):
         except:
             url = ''
         return url
-
-    @property
-    def form_five_matches(self):
-        while len(self.form) < 5:
-            self.form += '?'
-        return self.form
 
     def clear_data(self):
         self.matches_played = 0
@@ -47,20 +41,19 @@ class Team(models.Model):
 
 
 class Fixture(models.Model):
-    team_home = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='home_team')
-    team_away = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name='away_team')
+    team_home = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name='home_team', null=True)
+    team_away = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name='away_team', null=True)
     odds_team_home = models.DecimalField(max_digits=4, decimal_places=2)
     odds_draw = models.DecimalField(max_digits=4, decimal_places=2)
     odds_team_away = models.DecimalField(max_digits=4, decimal_places=2)
-    match_num = models.IntegerField(default=0, null=True, blank=True)
-    week = models.IntegerField(default=0, null=True, blank=True)
+    match_num = models.IntegerField(default=0)
+    week = models.IntegerField(default=0)
     date = models.DateTimeField()
     played = models.BooleanField(default=False)
-    result_home = models.IntegerField(default=0, null=True, blank=True)
-    result_away = models.IntegerField(default=0, null=True, blank=True)
+    result_home = models.IntegerField(default=None, null=True, blank=True)
+    result_away = models.IntegerField(default=None, null=True, blank=True)
     winner_home = models.BooleanField(default=False)
     winner_away = models.BooleanField(default=False)
-    table_updated = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.team_home} - {self.team_away}"
@@ -95,8 +88,6 @@ class Fixture(models.Model):
         self.team_away.goals_scored += self.result_away
         self.team_home.goals_conceded += self.result_away
         self.team_away.goals_conceded += self.result_home
-
-        self.table_updated = True
 
         self.save()
         self.team_home.save()
@@ -136,9 +127,13 @@ class Coupon(models.Model):
 
 
 class Bet(models.Model):
-    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
     fixture = models.ForeignKey(Fixture, on_delete=models.CASCADE)
     pick = models.CharField(choices=MATCH_PICKS, max_length=4)
+    outcome = models.IntegerField(choices=COUPON_OUTCOMES, default=0)
+    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, default=None, null=True)
+
+    def __str__(self):
+        return f"{self.fixture} Pick: {self.pick}"
 
 
 class ExtendedUser(models.Model):
