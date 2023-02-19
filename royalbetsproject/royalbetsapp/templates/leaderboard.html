@@ -6,8 +6,15 @@
 <div style="padding-top: 120px;"></div>
 <div class="container">
     {% for user in users %}
-        <div class="item mx-auto col-lg-6 bg-primary rounded p-1 m-3">
-            <span class="text-white">{{user}}: {{user.overall|floatformat:2}}</span>
+        <div class="item mx-auto col-lg-6 rounded p-3 m-3 lbUser">
+            {% if forloop.first %}
+            <div class="p-3 lbUserFirst rounded">
+                <img id="crown" alt="crown" width=16px src="{% static 'images/crown.png' %}">
+            {% else %}
+            <div class="p-3 lbUserDetails rounded">
+            {% endif %}
+                <span class="text-white">{{user}}: {{user.overall|floatformat:2}}</span>
+            </div>
         </div>
     {% endfor %}
 </div>

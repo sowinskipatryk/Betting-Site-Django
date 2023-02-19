@@ -101,7 +101,6 @@ def register_view(request):
 
         if register_form.is_valid():
             user = register_form.save()
-            user.set_password(user.password)
             user.save()
             registered = True
             login(request, user)
@@ -123,9 +122,11 @@ def login_view(request):
         password = request.POST.get('password')
 
         user = authenticate(username=username, password=password)
-
+        print(user)
         if user:
+            print('if user')
             if user.is_active:
+                print('if active')
                 login(request, user)
                 return HttpResponseRedirect(reverse('index'))
             else:

@@ -3,12 +3,17 @@
     display: inline-block;
 }
 
-.result, .bet, .coupon
+.result, .bet, .coupon, .lbUser
 {
     background-color: rgb(28 32 36);
 }
 
-.resultDetails, .betDetails
+.lbUserFirst
+{
+    background-color: rgb(98 78 21);
+}
+
+.resultDetails, .betDetails, .lbUserDetails
 {
     background-color: rgb(51 58 64);
 }
