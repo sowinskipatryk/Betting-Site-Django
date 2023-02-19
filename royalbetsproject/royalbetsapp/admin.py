@@ -15,11 +15,11 @@ class CouponAdmin(admin.ModelAdmin):
 
 
 class ExtendedUserAdmin(admin.ModelAdmin):
-    list_display = ('user', 'balance')
+    list_display = ('user', 'balance', 'overall')
 
 
 class BetAdmin(admin.ModelAdmin):
-    list_display = ('pick', 'fixture')
+    list_display = ('pick', 'fixture', 'outcome', 'coupon')
 
 
 admin.site.register(Team, TeamAdmin)

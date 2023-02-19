@@ -16,3 +16,30 @@
         max-width: none !important;
     }
 }
+
+.formBox
+{
+    width: 1.25rem;
+    display: inline-block;
+    text-align: center;
+}
+
+.formWin
+{
+    background-color: #3ec434;
+}
+
+.formLose
+{
+    background-color: #c43434;
+}
+
+.formDraw
+{
+    background-color: #bec434;
+}
+
+.formUnknown
+{
+    background-color: #898989;
+}

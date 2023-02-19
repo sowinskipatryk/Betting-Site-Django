@@ -22,25 +22,22 @@ def draw_outcomes_and_update_data(id):
                 fx.winner_away and bet.pick == '2') or (
                 not fx.winner_home and not fx.winner_away and bet.pick == 'X'):
             bet.outcome = 1
+            bet.save()
             coupon_bets = Bet.objects.filter(coupon=bet.coupon)
-            flag = True
-            for cpbet in coupon_bets:
-                if cpbet.outcome != 1:
-                    flag = False
-                    break
-            if coupon_bets and flag:
+            if all(cpbet.outcome == 1 for cpbet in coupon_bets):
                 bet.coupon.outcome = 1
-                ext_user = ExtendedUser.objects.get(user=bet.coupon.creator)
-                ext_user.overall += (bet.coupon.prize - bet.coupon.stake)
                 bet.coupon.save()
+                ext_user = ExtendedUser.objects.get(user=bet.coupon.creator)
+                ext_user.balance += bet.coupon.prize
+                ext_user.overall += (bet.coupon.prize - bet.coupon.stake)
                 ext_user.save()
 
         else:
             bet.outcome = 2
+            bet.save()
             bet.coupon.outcome = 2
             bet.coupon.prize = 0
+            bet.coupon.save()
             ext_user = ExtendedUser.objects.get(user=bet.coupon.creator)
             ext_user.overall -= bet.coupon.stake
-            bet.coupon.save()
             ext_user.save()
-        bet.save()

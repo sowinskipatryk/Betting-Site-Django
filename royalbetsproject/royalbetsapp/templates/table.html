@@ -33,7 +33,21 @@
                 <td>{{team.draws}}</td>
                 <td>{{team.losses}}</td>
                 <td>{{team.goals_scored}}:{{team.goals_conceded}}</td>
-                <td>{{team.form}}</td>
+                <td>
+                    {% for sign in team.form %}
+                    {% if sign == 'W' %}
+                    <div class="rounded formWin formBox">
+                    {% elif sign == 'D' %}
+                    <div class="rounded formDraw formBox">
+                    {% elif sign == 'L' %}
+                    <div class="rounded formLose formBox">
+                    {% else %}
+                    <div class="rounded formUnknown formBox">
+                    {% endif %}
+                    {{sign}}
+                    </div>
+                    {% endfor %}
+                </td>
             </tbody>
             {% endfor %}
         </table>
