@@ -1,6 +1,7 @@
 import random
 from datetime import datetime, timedelta
 from .odds_generator import generate_odds
+from django.utils import timezone
 
 teams = [i for i in range(1, 21)]
 teams_num = len(teams)
@@ -12,11 +13,9 @@ up = 2
 down = teams_num
 
 fixtures_list = []
-gap_week = 0
-dt = datetime(2022, 8, 1)
-dt += timedelta(days=4 - dt.weekday())
+
+dt = datetime.now()
 for week in range(1, weeks_num+1):
-    match_dates = [dt, dt + timedelta(days=1), dt + timedelta(days=2)]
     home = up
     away = down
     for match in range(matches_num):
@@ -51,10 +50,10 @@ for week in range(1, weeks_num+1):
         fixture['odds_draw'] = '%.2f' % odd_draw
         fixture['odds_team_away'] = '%.2f' % odd_away
 
-        match_date = random.choice(match_dates)
-        fixture['date'] = match_date + timedelta(
-            hours=random.choice(range(12, 21)),
-            minutes=random.choice([0, 15, 30, 45]))
+        h, m = random.choice([(13, 30), (14, 30), (15, 0),  (15, 30), (16, 0), (17, 30), (18, 30), (20, 45), (21, 0)])
+        tz = timezone.get_current_timezone()
+        match_date = timezone.make_aware(dt.replace(hour=h, minute=m, second=0, microsecond=0), tz)
+        fixture['date'] = match_date
         fixtures_list.append(fixture)
         match_id += 1
 
@@ -65,8 +64,4 @@ for week in range(1, weeks_num+1):
     if down == 1:
         down = teams_num
 
-    gap_week += 1
-    dt += timedelta(days=7)
-    if gap_week % 8:
-        dt += timedelta(days=7)
-        gap_week = 0
+    dt += timedelta(days=1)

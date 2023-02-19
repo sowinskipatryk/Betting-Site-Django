@@ -58,7 +58,17 @@ class Fixture(models.Model):
     def __str__(self):
         return f"{self.team_home} - {self.team_away}"
 
-    def update_table(self):
+    def update_teams_data(self):
+        if self.result_home > self.result_away:
+            self.winner_home = True
+            self.winner_away = False
+        elif self.result_home < self.result_away:
+            self.winner_away = True
+            self.winner_home = False
+        else:
+            self.winner_home = False
+            self.winner_away = False
+
         self.team_home.matches_played += 1
         self.team_away.matches_played += 1
 

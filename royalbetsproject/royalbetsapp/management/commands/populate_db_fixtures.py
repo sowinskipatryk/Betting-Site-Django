@@ -1,6 +1,8 @@
 from django.core.management.base import BaseCommand
 from royalbetsapp.models import Fixture
+from royalbetsapp.tasks import draw_outcomes_and_update_data
 from .fixtures_generator import fixtures_list
+from django.utils import timezone
 
 
 class Command(BaseCommand):
@@ -16,5 +18,7 @@ class Command(BaseCommand):
              'match_num': fixture['match_num'],
              'week': fixture['week'],
              'date': fixture['date']} for fixture in fixtures_list]
-        Fixture.objects.bulk_create([Fixture(**data) for data in my_models_data])
+        fixtures = Fixture.objects.bulk_create([Fixture(**data) for data in my_models_data])
+        for fixture in fixtures:
+            draw_outcomes_and_update_data.apply_async(args=[fixture.id], eta=fixture.date + timezone.timedelta(minutes=90))
         self.stdout.write(self.style.SUCCESS('Successfully populated the database with model instances'))

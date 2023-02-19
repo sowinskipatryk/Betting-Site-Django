@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
@@ -7,17 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .models import Team, Fixture, Coupon, ExtendedUser, Bet, COUPON_TYPES
 from .forms import RegisterForm
-from .utils import draw_results
 import json
 import random
 
 
 def table(request):
     teams = Team.objects.all().order_by('-league_points', '-wins', '-goals_scored', 'goals_conceded', 'name')
-    for id, tm in enumerate(teams):
-        tm.position = id + 1
-        tm.save()
-
     context = {'teams': teams}
     return render(request, 'table.html', context)
 
@@ -42,26 +36,6 @@ def index(request):
 
 
 def results(request):
-    fixtures_notplayed = Fixture.objects.filter(played=False)
-
-    for fx in fixtures_notplayed:
-        if fx.date.timestamp() < datetime.now().timestamp():
-            fx.played = True
-
-            fx.result_home, fx.result_away = draw_results(fx.odds_team_home, fx.odds_draw, fx.odds_team_away)
-            if fx.result_home > fx.result_away:
-                fx.winner_home = True
-                fx.winner_away = False
-            elif fx.result_home < fx.result_away:
-                fx.winner_away = True
-                fx.winner_home = False
-            else:
-                fx.winner_home = False
-                fx.winner_away = False
-
-            fx.update_table()
-            fx.save()
-
     fixtures_played = Fixture.objects.filter(played=True).order_by('-date')
 
     page = request.GET.get('page', 1)
@@ -170,33 +144,6 @@ def logout_view(request):
 
 @login_required
 def coupon_history(request):
-
-    open_coupons = Coupon.objects.filter(creator=request.user, outcome=0)
-    for coup in open_coupons:
-        open_bets = Bet.objects.filter(coupon=coup)
-        bet_outcomes = []
-        for bet in open_bets:
-            if bet.fixture.played:
-                if (bet.fixture.winner_home and bet.pick == '1') or (
-                        bet.fixture.winner_away and bet.pick == '2') or (
-                        not bet.fixture.winner_home and not bet.fixture.winner_away and bet.pick == 'X'):
-                    bet.outcome = 1
-                else:
-                    bet.outcome = 2
-                bet.save()
-                bet_outcomes.append(bet.outcome)
-
-        ext_user = ExtendedUser.objects.get(user=coup.creator)
-        if 2 in bet_outcomes:
-            coup.outcome = 2
-            coup.prize = 0
-            ext_user.overall -= coup.stake
-        elif bet_outcomes and not 0 in bet_outcomes:
-            coup.outcome = 1
-            ext_user.overall += (coup.prize - coup.stake)
-        coup.save()
-        ext_user.save()
-
     coupons = Coupon.objects.filter(creator=request.user).order_by('-create_date')
     coupon_data = []
     for coupon in coupons:
