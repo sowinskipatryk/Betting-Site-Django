@@ -15,7 +15,7 @@ class CouponAdmin(admin.ModelAdmin):
 
 
 class ExtendedUserAdmin(admin.ModelAdmin):
-    list_display = ('user', 'balance', 'overall')
+    list_display = ('user', 'balance', 'points')
 
 
 class BetAdmin(admin.ModelAdmin):

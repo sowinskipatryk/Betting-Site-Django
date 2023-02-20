@@ -5,6 +5,10 @@
 
 <div style="padding-top: 120px;"></div>
 <div class="container">
+    <div class="text-white header-image text-center pb-2">
+        <img id="leaderboard-logo" alt="Leaderboard Logo" width=64px src="{% static 'images/leader.png' %}">
+        <span class="h3 ps-2 text-white">Leaderboard</span>
+    </div>
     {% for user in users %}
         <div class="item mx-auto col-lg-6 rounded p-3 m-3 lbUser">
             {% if forloop.first %}
@@ -13,7 +17,7 @@
             {% else %}
             <div class="p-3 lbUserDetails rounded">
             {% endif %}
-                <span class="text-white">{{user}}: {{user.overall|floatformat:2}}</span>
+                <span class="text-white">{{user}}: {{user.points}} points</span>
             </div>
         </div>
     {% endfor %}

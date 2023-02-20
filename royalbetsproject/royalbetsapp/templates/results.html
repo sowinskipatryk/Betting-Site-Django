@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Results{% endblock title %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/results.css' %}"/>
+{% endblock css %}
 {% block content %}
 
 <div style="padding-top: 120px;"></div>
@@ -10,7 +13,11 @@
     <div class="infinite-item mx-auto col-lg-8">
         <div class="row d-block mt-6 pb-3">
             <div class="p-3 result rounded">
+                {% if match.result_home is None %}
+                <div class="resultDetails p-3 rounded matchLive">
+                {% else %}
                 <div class="resultDetails p-3 rounded">
+                {% endif %}
                     <div class="text-white h6">{{match.date|date:'d F Y H:i'}}<span style="float: right;">Week {{match.week}}</span></div>
                     <div class="text-white mt-4">
                         <img class="team-logo me-2" width=32px alt="{{match.team_home}}" src="{{match.team_home.image_url}}">
@@ -19,7 +26,11 @@
                         {% else %}{{match.team_home}} - {{match.team_away}}
                         {% endif %}
                         <img class="team-logo ms-2" width=32px alt="{{match.team_away}}" src="{{match.team_away.image_url}}">
+                        {% if match.result_home is None %}
+                        <span class="ms-2 text-danger">LIVE!</span>
+                        {% else %}
                         <span class="ms-2">{{match.result_home}}:{{match.result_away}}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

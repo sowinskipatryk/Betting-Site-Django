@@ -151,7 +151,7 @@ class ExtendedUser(models.Model):
     balance = models.FloatField(default=0.00)
     avatar = models.ImageField(upload_to='profile_pics', null=True, blank=True)
     coupons = models.ManyToManyField(Coupon, blank=True)
-    overall = models.FloatField(default=0.00)
+    points = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
@@ -160,4 +160,4 @@ class ExtendedUser(models.Model):
 @receiver(post_save, sender=User)
 def create_custom_user(sender, instance, created, **kwargs):
     if created:
-        ExtendedUser.objects.create(user=instance)
+        ExtendedUser.objects.create(user=instance, balance=100.)

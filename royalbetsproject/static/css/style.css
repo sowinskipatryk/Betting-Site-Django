@@ -49,45 +49,42 @@ div#betHeader
     color: rgba(255,255,255,0.8);
 }
 
-#register-button
+#register-button, #logout-button
 {
     color: white;
     background-color: #212529;
     border-color: #212529;
-    border: 2px solid white;
+    border: 3px solid white;
+    padding: 0.5rem 1rem 0.5rem 1rem;
 }
 
-#register-button:hover
+#register-button:hover, #logout-button:hover
 {
     background-color: #424649;
     border-color: #424649;
-    border: 2px solid white;
-}
-
-#logout-button
-{
-    color: white;
-    background-color: #2e3133;
-    border-color: #2e3133;
-}
-
-#logout-button:hover
-{
-    background-color: #212529;
-    border-color: #212529;
 }
 
 .btn#login-button
 {
     margin-right: 5px;
-    border: 2px solid #292eb5;
-    color: #292eb5;
+    border: 3px solid #284774;
+    color: #284774;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.btn#login-button:hover
+{
+    border: 3px solid #d3d4d5;
 }
 
 .signUpForm
 {
+    background-color: rgb(28, 32, 36);
+    margin-top: 120px;
+}
+
+.formWrapper {
     background-color: #182a44;
-    border: 1px solid #0d1624;
 }
 
 div.form-container
@@ -95,12 +92,9 @@ div.form-container
     width: 400px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #0d336a;
-    border-radius: var(--bs-border-radius);
     margin-top: 1rem;
-    margin-bottom: 0.5rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
-    border: 1px solid #0d1624;
+    background-color: #284774;
 }
 
 div.betPick {
@@ -155,11 +149,8 @@ label[for="stakeInput"]
 }
 
 .signConfirm {
-    border: 1px solid white;
-}
-
-.signConfirm:hover {
-    border: 1px solid white;
+    padding: 0.75rem 2rem 0.75rem 2rem;
+    font-size: 1.1rem;
 }
 
 .deleteBetBtn {

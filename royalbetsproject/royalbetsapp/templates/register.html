@@ -2,15 +2,15 @@
 {% load static %}
 {% block title %}Sign Up{% endblock title %}
 {% block content %}
-<div style="padding-top: 120px;"></div>
-    <div class="container-fluid text-white rounded-2 col-lg-8 signUpForm p-3">
+<div class="container-fluid text-white rounded col-lg-8 signUpForm p-3">
+    <div class="rounded formWrapper p-3">
         {% if registered %}
         <h2>You have been registered!</h2>
         {% else %}
         <h2>Fill out the Registration form</h2>
-        <div>
-            <div class="form-container">
-            <form enctype="multipart/form-data" method="post" class="pt-3">
+        <div class="mt-4 mb-2">
+            <div class="form-container rounded">
+            <form enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 {{form_as.p}}
                 {% for field in register_form %}
@@ -20,11 +20,12 @@
                   </div>
                 {% endfor %}
                 <div class="text-center">
-                    <input type="submit" class="btn btn-primary ps-4 pe-4 mt-2 mb-4 signConfirm" value="Register">
+                    <input type="submit" class="btn btn-primary mt-3 mb-3 signConfirm" value="Register">
                 </div>
             </form>
             </div>
         </div>
         {% endif %}
     </div>
+</div>
 {% endblock content %}

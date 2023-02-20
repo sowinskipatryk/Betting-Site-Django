@@ -81,7 +81,6 @@ def coupon_submit(request):
 
             coupon = Coupon(coupon_id=coupon_id, type=betType,
                         creator=creator.user, stake=stake, odds=odds, prize=prize)
-
             coupon.save()
 
             creator.balance -= stake
@@ -122,11 +121,8 @@ def login_view(request):
         password = request.POST.get('password')
 
         user = authenticate(username=username, password=password)
-        print(user)
         if user:
-            print('if user')
             if user.is_active:
-                print('if active')
                 login(request, user)
                 return HttpResponseRedirect(reverse('index'))
             else:
@@ -158,6 +154,6 @@ def coupon_history(request):
 
 
 def leaderboard(request):
-    users = ExtendedUser.objects.all().order_by('-overall')
+    users = ExtendedUser.objects.all().order_by('-points')
     context = {'users': users}
     return render(request, 'leaderboard.html', context)

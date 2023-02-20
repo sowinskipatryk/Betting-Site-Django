@@ -4,9 +4,15 @@ from .utils import draw_results
 
 
 @shared_task
-def draw_outcomes_and_update_data(id):
+def hide_fixture_from_bets(id):
     fx = Fixture.objects.get(id=id)
     fx.played = True
+    fx.save()
+
+
+@shared_task
+def draw_outcomes_and_update_data(id):
+    fx = Fixture.objects.get(id=id)
     fx.result_home, fx.result_away = draw_results(fx.odds_team_home, fx.odds_draw, fx.odds_team_away)
     fx.save()
     fx.update_teams_data()
@@ -29,15 +35,16 @@ def draw_outcomes_and_update_data(id):
                 bet.coupon.save()
                 ext_user = ExtendedUser.objects.get(user=bet.coupon.creator)
                 ext_user.balance += bet.coupon.prize
-                ext_user.overall += (bet.coupon.prize - bet.coupon.stake)
+                ext_user.points += int((bet.coupon.prize - bet.coupon.stake) * 100)
                 ext_user.save()
 
         else:
             bet.outcome = 2
             bet.save()
-            bet.coupon.outcome = 2
-            bet.coupon.prize = 0
-            bet.coupon.save()
-            ext_user = ExtendedUser.objects.get(user=bet.coupon.creator)
-            ext_user.overall -= bet.coupon.stake
-            ext_user.save()
+            if bet.coupon.outcome != 2:
+                bet.coupon.outcome = 2
+                bet.coupon.prize = 0
+                bet.coupon.save()
+                ext_user = ExtendedUser.objects.get(user=bet.coupon.creator)
+                ext_user.points -= int(bet.coupon.stake * 100)
+                ext_user.save()
