@@ -1,5 +1,4 @@
 const currentUrl = window.location.href;
-
 const navLinks = document.querySelectorAll('.nav-link');
 
 navLinks.forEach(link => {

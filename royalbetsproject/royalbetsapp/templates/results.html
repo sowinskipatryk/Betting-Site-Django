@@ -42,7 +42,7 @@
 
 {% if matches.has_next %}
 <div class="mb-2" style="text-align: center;">
-<button type="button" class="btn btn-secondary m-2"><a class="infinite-more-link" href="?page={{ matches.next_page_number }}" style="text-decoration: none; color:white;">Load more</a></button>
+    <a class="infinite-more-link" href="?page={{ matches.next_page_number }}" style="text-decoration: none; color:white;"></a>
 </div>
 {% endif %}
 

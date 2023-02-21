@@ -28,3 +28,67 @@
 .oddButton {
     padding: 0.3rem 0.5rem 0.3rem 0.5rem;
 }
+
+.deleteBetBtn {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+}
+
+.oddsTable {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+label[for="stakeInput"]
+{
+    min-width:40%;
+}
+
+div.betPick {
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.2rem;
+    background-color: #5d5c5c;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
+#betContent {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(44,48,52);
+}
+
+.placeBetButton {
+    padding: 2.5% 7% 2.5% 7%;
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+#betSummary {
+    color: white;
+    font-size: 0.8rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+div#betbuilder
+{
+    width:100%;
+    min-height:30px;
+    border-radius: 5px;
+    margin-left: 10px;
+    background-color: #537cc7;
+    padding-bottom: 10px;
+    position: sticky;
+    top: 120px;
+}
+
+div#betHeader
+{
+    color: white;
+    text-align: center;
+    padding: 7.5% 5% 5% 5%;
+}

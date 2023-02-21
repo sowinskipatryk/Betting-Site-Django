@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from .odds_generator import generate_odds
 from django.utils import timezone
 
-teams = [i for i in range(1, 21)]
+teams = [i+1 for i in range(20)]
 teams_num = len(teams)
 weeks_num = (len(teams)-1) * 2
 matches_num = teams_num // 2

@@ -23,19 +23,19 @@ function updateAccountBalance(balance) {
 function checkBetNumber() {
     const betNum = Object.keys(betPicks).length;
     if (betNum == 1) {
-    betHeader.innerText = 'Single Bet'
-    betOdds.innerText = odds.toString()
-    placeBetButton.classList.remove('d-none')
-    betSummary.classList.remove('d-none')
-    stakeInput.classList.remove('d-none')
+    betHeader.innerText = 'Single Bet';
+    betOdds.innerText = odds.toString();
+    placeBetButton.classList.remove('d-none');
+    betSummary.classList.remove('d-none');
+    stakeInput.classList.remove('d-none');
     betContent.classList.add('p-3');
     }
     else if (betNum > 1) {
-    betHeader.innerText = 'Multi Bet'
-    betOdds.innerText = odds.toString()
-    placeBetButton.classList.remove('d-none')
-    betSummary.classList.remove('d-none')
-    stakeInput.classList.remove('d-none')
+    betHeader.innerText = 'Multi Bet';
+    betOdds.innerText = odds.toString();
+    placeBetButton.classList.remove('d-none');
+    betSummary.classList.remove('d-none');
+    stakeInput.classList.remove('d-none');
     }
     else {
     setInitialState();
@@ -54,7 +54,7 @@ function updateCouponStruct(picks) {
           <button type="button" class="btn btn-danger deleteBetBtn" onclick="deleteBet(${key}, ${odd});">X</button>
         </div>
       `;
-      string += betString
+      string += betString;
     }
     pickedBets.innerHTML = string;
 }
@@ -62,9 +62,9 @@ function updateCouponStruct(picks) {
 function deleteBet(id, odd) {
     delete betPicks[id];
     odds /= parseFloat(odd);
-    odds = Math.round(odds * 100) / 100
-    updateCouponStruct(betPicks)
-    checkBetNumber()
+    odds = Math.round(odds * 100) / 100;
+    updateCouponStruct(betPicks);
+    checkBetNumber();
 }
 
 function setInitialState() {
@@ -117,17 +117,17 @@ function sendData() {
     xhr.send(JSON.stringify(data));
 }
 
-for (i=0; i<oddsButtons.length; i++) {
-    oddsButtons[i].addEventListener('click', function(){
-        const team = this.dataset.team
-        const pick = this.dataset.pick
-        const matchNum = this.dataset.match
-        const odd = this.dataset.odd
+document.addEventListener('click', function(event){
+    if (event.target.classList.contains('oddButton')) {
+        const team = event.target.dataset.team;
+        const pick = event.target.dataset.pick;
+        const matchNum = event.target.dataset.match;
+        const odd = event.target.dataset.odd;
 
         const data = {'pick': pick, 'team': team, 'odd': odd};
 
         if (betPicks[matchNum] !== undefined && betPicks[matchNum]['pick'] === data['pick']) {
-            deleteBet(matchNum, odd)
+            deleteBet(matchNum, odd);
         }
         else {
             if (Object.keys(betPicks).length === 0) {
@@ -136,32 +136,30 @@ for (i=0; i<oddsButtons.length; i++) {
 
             else if (betPicks[matchNum] !== undefined)
             {
-            odds /= parseFloat(betPicks[matchNum]['odd'])
-            odds *= parseFloat(odd)
+            odds /= parseFloat(betPicks[matchNum]['odd']);
+            odds *= parseFloat(odd);
             }
             else {
-            odds *= parseFloat(odd)
+            odds *= parseFloat(odd);
             }
-            betPicks[matchNum] = data
+            betPicks[matchNum] = data;
         }
 
         if (userLogged) {
-
             betStake.textContent = "$"+stakeInput.value;
-            betPrize.textContent = "$"+(Math.round(odds*stakeInput.value * 100) / 100)
+            betPrize.textContent = "$"+(Math.round(odds*stakeInput.value * 100) / 100);
             stakeInput.oninput = function() {
                 betStake.textContent = "$"+this.value;
-                betPrize.textContent = "$"+(Math.round(odds*this.value * 100) / 100)
+                betPrize.textContent = "$"+(Math.round(odds*this.value * 100) / 100);
             }
 
-            odds = Math.round(odds * 100) / 100
+            odds = Math.round(odds * 100) / 100;
 
-            checkBetNumber()
+            checkBetNumber();
 
-            updateCouponStruct(betPicks)
+            updateCouponStruct(betPicks);
         }
-    });
-};
+    }});
 
 placeBetButton.addEventListener("click", function(event) {
     event.preventDefault();

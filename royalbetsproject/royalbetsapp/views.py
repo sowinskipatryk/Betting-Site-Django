@@ -28,6 +28,7 @@ def odds(request):
     except EmptyPage:
         matches = paginator.page(paginator.num_pages)
     context = {'matches': matches}
+
     return render(request, 'odds.html', context)
 
 
@@ -47,6 +48,7 @@ def results(request):
     except EmptyPage:
         matches = paginator.page(paginator.num_pages)
     context = {'matches': matches}
+
     return render(request, 'results.html', context)
 
 
