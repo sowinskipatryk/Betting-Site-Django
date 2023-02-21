@@ -6,9 +6,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/odds.css' %}"/>
 {% endblock css %}
 {% block content %}
-    <div style="padding-top: 120px;"></div>
-    <div class="row">
-        <div class="infinite-container col-9">
+    <div class="row extraMargin">
+        <div class="infinite-container col-md-8 col-xl-9">
             {% for match in matches %}
                 {% if not match.played %}
                     <div class="infinite-item">
@@ -16,7 +15,7 @@
                             <div class="p-3 bet rounded">
                                 <div class="betDetails p-3 rounded">
                                     <div class="text-white h6">{{match.date|date:'d F Y H:i'}}<span style="float: right;">Week {{match.week}}</span></div>
-                                    <div class="text-white mt-4 mb-4">
+                                    <div class="text-white mt-4 mb-4 matchTeams">
                                         <img class="team-logo me-2" width=32px alt="{{match.team_home}}" src="{{match.team_home.image_url}}"> {{match.team_home}} - {{match.team_away}}
                                         <img class="team-logo ms-2" width=32px alt="{{match.team_away}}" src="{{match.team_away.image_url}}">
                                     </div>
@@ -41,12 +40,12 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="col-3 d-inline">
-            <div id="betbuilder" class="mb-1">
+        <div class="col-md-4 col-xl-3 d-inline">
+            <div id="betbuilder" class="rounded p-3">
                 {% if not user.is_authenticated %}
                     <div id="betHeader" data-logged="false">Log in to create a coupon</div>
                 {% else %}
-                    <form method="post" id="couponForm">
+                    <form method="post" id="couponForm" class="rounded pb-3">
                     {% csrf_token %}
                     <div id="betHeader" data-logged="true">Add first event to the coupon</div>
                     <div id="betContent" class="rounded">

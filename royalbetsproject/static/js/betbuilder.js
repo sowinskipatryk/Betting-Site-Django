@@ -146,11 +146,11 @@ document.addEventListener('click', function(event){
         }
 
         if (userLogged) {
-            betStake.textContent = "$"+stakeInput.value;
-            betPrize.textContent = "$"+(Math.round(odds*stakeInput.value * 100) / 100);
+            betStake.textContent = "$"+(parseFloat(stakeInput.value).toFixed(2));
+            betPrize.textContent = "$"+((Math.round(odds*stakeInput.value * 100) / 100).toFixed(2));
             stakeInput.oninput = function() {
-                betStake.textContent = "$"+this.value;
-                betPrize.textContent = "$"+(Math.round(odds*this.value * 100) / 100);
+                betStake.textContent = "$"+(parseFloat(this.value).toFixed(2));
+                betPrize.textContent = "$"+((Math.round(odds*this.value * 100) / 100).toFixed(2));
             }
 
             odds = Math.round(odds * 100) / 100;
