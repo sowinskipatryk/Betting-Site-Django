@@ -90,7 +90,7 @@ def coupon_submit(request):
                 new_bet = Bet(coupon=coupon, fixture=Fixture.objects.get(id=bet['matchId']), pick=bet['matchPick'])
                 new_bet.save()
 
-        return JsonResponse({"status": "success"})
+        return JsonResponse({"status": "success", 'accountBalance': creator.balance})
 
 
 def register_view(request):

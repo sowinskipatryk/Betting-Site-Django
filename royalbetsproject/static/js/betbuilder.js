@@ -7,19 +7,17 @@ const betSummary = document.getElementById('betSummary');
 const betOdds = document.getElementById('betOdds');
 const betPrize = document.getElementById('betPrize');
 const betStake = document.getElementById('betStake');
-const stakeInput = document.getElementById('stakeInput');
 const betContent = document.getElementById('betContent');
-const accountBalance = document.getElementById('accountBalance');
+const stakeInput = document.getElementById('stakeInput');
+const accBalance = document.getElementById('accountBalance');
 
 let betPicks = {};
 let odds = 0.0;
 
-function updateAccountBalance(value) {
-    if (value < accBalance) {
-    const floatVal = parseFloat(accBalance - value);
+function updateAccountBalance(balance) {
+    const floatVal = parseFloat(balance);
     const formatVal = floatVal.toFixed(2);
-    accountBalance.innerText = "$" + formatVal;
-    }
+    accBalance.innerText = "$" + formatVal;
 }
 
 function checkBetNumber() {
@@ -53,7 +51,7 @@ function updateCouponStruct(picks) {
           Pick: <span class='matchPickInput'>${pick}</span>
           Team: ${team}
           <strong>${odd}</strong>
-          <button type="button" class="btn btn-danger deleteBetBtn" onclick="deleteBet(${key}, ${odd}); console.log(betPicks);">X</button>
+          <button type="button" class="btn btn-danger deleteBetBtn" onclick="deleteBet(${key}, ${odd});">X</button>
         </div>
       `;
       string += betString
@@ -78,6 +76,45 @@ function setInitialState() {
     stakeInput.classList.add('d-none');
     betPicks = {};
     odds = 0.0;
+}
+
+function sendData() {
+    let xhr = new XMLHttpRequest();
+    let url = "/coupon_submit/";
+    xhr.open("POST", url, true);
+
+    let betsInput = [];
+    const typeInput = document.getElementById("typeInput");
+    const matchPickInputs = $('.matchPickInput');
+    const matchIdInputs = $('.matchIdInput');
+    matchIdInputs.each(function(index, element) {
+        const matchId = element.innerText;
+        const matchPick = matchPickInputs[index].innerText;
+        const obj = {'matchId': matchId, 'matchPick': matchPick};
+        betsInput.push(obj);
+    });
+
+    let data = {
+      'betsInput': betsInput,
+      'stakeInput': stakeInput.value,
+      'oddsInput': betOdds.innerText,
+      'prizeInput': betPrize.innerText
+    };
+
+    let csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        if (response.status == 'success') {
+          updateAccountBalance(response.accountBalance, stakeInput.value);
+          setInitialState();
+          alert('Coupon submitted successfully!');
+        }
+      }
+    };
+    xhr.send(JSON.stringify(data));
 }
 
 for (i=0; i<oddsButtons.length; i++) {
@@ -120,7 +157,6 @@ for (i=0; i<oddsButtons.length; i++) {
             odds = Math.round(odds * 100) / 100
 
             checkBetNumber()
-            console.log(betPicks)
 
             updateCouponStruct(betPicks)
         }
@@ -129,33 +165,5 @@ for (i=0; i<oddsButtons.length; i++) {
 
 placeBetButton.addEventListener("click", function(event) {
     event.preventDefault();
-    let xhr = new XMLHttpRequest();
-    let url = "/coupon_submit/";
-    xhr.open("POST", url, true);
-
-    let betsInput = [];
-    const typeInput = document.getElementById("typeInput");
-    const matchPickInputs = $('.matchPickInput');
-    const matchIdInputs = $('.matchIdInput');
-    matchIdInputs.each(function(index, element) {
-        const matchId = element.innerText;
-        const matchPick = matchPickInputs[index].innerText;
-        const obj = {'matchId': matchId, 'matchPick': matchPick};
-        betsInput.push(obj);
-    });
-
-    let data = {
-      'betsInput': betsInput,
-      'stakeInput': stakeInput.value,
-      'oddsInput': betOdds.innerText,
-      'prizeInput': betPrize.innerText
-    };
-
-    let csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-    xhr.setRequestHeader("X-CSRFToken", csrf_token);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.send(JSON.stringify(data));
-
-    updateAccountBalance(stakeInput.value)
-    setInitialState();
+    sendData();
 });

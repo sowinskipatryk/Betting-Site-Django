@@ -5,6 +5,7 @@ from .utils import draw_results
 
 @shared_task
 def hide_fixture_from_bets(id):
+    print('hide', id)
     fx = Fixture.objects.get(id=id)
     fx.played = True
     fx.save()
@@ -12,6 +13,7 @@ def hide_fixture_from_bets(id):
 
 @shared_task
 def draw_outcomes_and_update_data(id):
+    print('update', id)
     fx = Fixture.objects.get(id=id)
     fx.result_home, fx.result_away = draw_results(fx.odds_team_home, fx.odds_draw, fx.odds_team_away)
     fx.save()
